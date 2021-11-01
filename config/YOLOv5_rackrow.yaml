@@ -1,0 +1,87 @@
+---
+yolov5_train:
+  weights: '../model/pretrained_yolo/yolov5s.pt'  #initial weights path
+  cfg: ''  #model.yaml path
+  data: '../config/data_config/rackrow.yaml'  #dataset.yaml path
+  hyp: '../config/hyps/hyp.scratch.yaml'  #hyperparameters path
+  epochs: 500
+  batch_size: 16
+  imgsz: 640  #train, val image size (pixels)
+  rect: False #rectangular training
+  resume: False  #resume most recent training
+  nosave: False  #only save final checkpoint
+  noval: False #only validate final epoch
+  noautoanchor: False  #disable autoanchor check
+  evolve:   #evolve hyperparameters for x generations
+  bucket: ''  #gsutil bucket
+  cache:   #--cache images in "ram" (default) or "disk"
+  image_weights: False  #use weighted image selection for training
+  device: ''  #cuda device, i.e. 0 or 0,1,2,3 or cpu
+  multi_scale: False  #vary img-size +/- 50%%
+  single_cls: False  #train multi-class data as single-class
+  adam: False #use torch.optim.Adam() optimizer
+  sync_bn: False  #use SyncBatchNorm, only available in DDP mode
+  workers: 8  #maximum number of dataloader workers
+  project: '../runs/new_rackrow/train'  #save to project/name
+  name: 'exp'
+  exist_ok: False  #existing project/name ok, do not increment
+  quad:  #quad dataloader
+  linear_lr: False
+  label_smoothing: 0.0  #Label smoothing epsilon
+  patience: 100   #EarlyStopping patience (epochs without improvement)
+  freeze: 0  #Number of layers to freeze. backbone=10, all=24
+  save_period: -1  #Save checkpoint every x epochs (disabled if < 1)
+  local_rank: -1  #DDP parameter, do not modify
+  entity: None  #W&B: Entity
+  upload_dataset: False  #W&B: Upload dataset as artifact table
+  bbox_interval: -1  #W&B: Set bounding-box image logging interval
+  artifact_alias: 'latest'  #W&B: Version of dataset artifact to use
+
+yolov5_detect:
+  weights: '/media/premium/common-biscuit/main/planogram_biscuit/runs/new_rackrow/train/exp4/weights/best.pt'   #model.pt path(s)
+  source: '/media/premium/common-biscuit/main/planogram_biscuit/data/rackrow_dataset/images/test'
+  imgsz: [640]
+  conf_thres: 0.50  #object confidence threshold
+  iou_thres: 0.45  #IOU threshold for NMS
+  max_det: 300  # maximum detections per image
+  device: ''  # cuda device, i.e. 0 or 0,1,2,3 or cpu
+  view_img: False  # show results
+  save_txt: True  # save results to *.txt
+  save_conf: True  # save confidences in --save-txt labels
+  save_crop: False  # save cropped prediction boxes
+  nosave: False  # do not save images/videos
+  classes:  # filter by class: --class 0, or --class 0 2 3
+  agnostic_nms: False  # class-agnostic NMS
+  augment: False  # augmented inference
+  visualize: False  # visualize features
+  update: False  # update all models
+  project: '../runs/new_rackrow/detect'  # save results to project/name
+  name: 'exp'  # save results to project/name
+  exist_ok: False  # existing project/name ok, do not increment
+  line_thickness: 3  # bounding box thickness (pixels)
+  hide_labels: False  # hide labels
+  hide_conf: False  # hide confidences
+  half: False  # use FP16 half-precision inference
+
+mlflow_logging:
+    artifacts_location: file:///media/premium/common-biscuit/main/planogram_biscuit/model_tracking/artifacts
+    uri_train_valid: file:///media/premium/common-biscuit/main/planogram_biscuit/model_tracking/experiments
+    port: 5050
+    host: localhost
+    temp_artifacts_location: /home/sumit-tyagi/sumit-ssd/common-biscuit/main/planogram_biscuit/model_tracking/artifacts_temp/
+path:
+    data: ../data/
+    validation_images: 
+    project_folder: /media/drive/rajat/planogram_compliance/
+    model_setup: /mnt/common/model_setup/
+    model: /mnt/common/models/
+    packets_folder: packets_yolo/
+    complete_rack_folder: complete_rack_yolo/
+    rack_row_folder: rack_row_yolo/
+    sub_brands_folder: sub_brands_yolo/
+    lookup_file: 'lookups/rackrow_lookup.csv'
+  
+  
+  
+  
+  

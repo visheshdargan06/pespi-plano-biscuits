@@ -1,0 +1,8 @@
+
+train: ../data/rackrow_dataset/images/train
+val: ../data/rackrow_dataset/images/val
+test: ../data/rackrow_dataset/images/test
+
+
+nc: 2
+names: ['rack row','complete rack']

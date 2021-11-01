@@ -1,0 +1,7 @@
+train: ../data/packets_dataset/images/train
+val: ../data/packets_dataset/images/val
+test: ../data/packets_dataset/images/test
+
+
+nc: 1 
+names: ['packets']

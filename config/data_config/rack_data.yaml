@@ -1,0 +1,8 @@
+
+train: ./rack_dataset/images/train
+val: ./rack_dataset/images/val
+test: ./rack_dataset/images/test
+
+
+nc: 1 
+names: ['rack']

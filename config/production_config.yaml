@@ -1,0 +1,73 @@
+---
+path:
+    blob_base_dir: /mnt/common
+    data: /mnt/common/data/
+    labels: labels/0824/
+    test: test/0916/
+    images: images
+    raw: /mnt/common/data/raw/
+    annotations: annotations
+    raw_annotations: /mnt/common/data/raw/annotations
+    classes: /mnt/common/data/lookups/predefined_classes.txt
+    non_packet: /mnt/common/data/lookups/non_packets.txt
+    project: /tf/
+    packet_lookup: /mnt/common/data/lookups/rack_model_lookup.csv
+
+data_path:
+    blob_base_dir: /media/premium/common-biscuit/
+    images_dir: data/vendor_samples/sample_before_after/ # folder for incremental images (need to check the input data stream in production)
+    output_images_folder: op_annotations/ # sub-folder under which annotations would be stored (to be automated later on)
+    
+compliance:
+    path:
+        image_output: data/output/image_annotations/test_outputs
+        output: data/output/compliance/location_pickles/test_loader
+        output_prev_after_comparsion: data/output/compliance/prev_after/
+    threshold:
+        packet_row_overlap_thresh: 0.7
+        packet_top_row_overlap_thresh: 0.5
+        missing_row_thresh: 0.8
+        missing_top_row_packet_overlap_thresh: 0.7
+        top_row_additional_pixels: 25
+        top_row_additional_thresh_pixels: 50
+        empty_row_bbox_thresh: 0.5
+        blank_middle_bbox_thresh: 0.5
+        blank_start_bbox_thresh: 0.5
+        blank_end_bbox_thresh: 0.5
+        blank_predicted_overlap_iou: 0.5 
+        missing_mid_row_thresh: 2.2
+
+packets_detection:
+    # model_path: models/packets_yolo/models/0926_packets_all-layerstrained_110-epochs_8-batch_0.001-learning_rate_2-stage_colored.h5
+    # anchors_path: model_setup/packets_yolo/0925_anchor_boxes.txt
+    # classes_path: model_setup/packets_yolo/predefined_classes.txt
+    # colored_model: True
+    # score: 0.20  # confidence score for prediction
+    # iou: 0.5  # iou threshold for prediction
+    # max_boxes: 75  # max. number of packets detected in a image
+    output_dir: main/planogram_biscuit/data/output/image_annotations/packets_detection/  # save json files
+    # image_size: 608  # recommended 608 for predictions
+    
+rackrow_detection:
+    # model_path: models/rack_row_yolo/models/0603_rack_row_all-layerstrained_110-epochs_4-batch_0.001-learning_rate_2-stage_colored.h5
+    # anchors_path: model_setup/rack_row_yolo/0930_anchor_boxes.txt
+    # classes_path: model_setup/rack_row_yolo/0924_predefined_classes.txt
+    # colored_model: True
+    # score: 0.20  # confidence score for prediction
+    # iou: 0.5  # iou threshold for prediction
+    # max_boxes: 7  # max. number of racks detected in a image
+    output_dir: main/planogram_biscuit/data/output/image_annotations/rackrow_detection/  # save json files
+    #image_size: 608  # recommended 608 for predictions
+    
+    
+sub_brand_detection:
+    model_dir: models/sub_brands_classification/0924_InceptionResNetV2_0.0002LR_40Epoch_47Classes/
+    input_json: data/output/image_annotations/packet_detection/ # output from the packet detection model in json format
+    cropped_size: 128  # to be used same as was used in training (would be automated in next iterations)
+    output_dir: data/output/image_annotations/sub_brand_detection/
+
+integrated_output:
+    sub_brand_output_dir: data/output/image_annotations/sub_brand_detection/
+    rackrow_output_dir: data/output/image_annotations/rackrow_detection/
+    integrated_dir: data/output/image_annotations/integrated/
+...

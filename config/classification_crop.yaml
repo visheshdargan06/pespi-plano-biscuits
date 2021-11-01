@@ -1,0 +1,55 @@
+image_crop:
+    data_folder: /home/sumit-tyagi/sumit-ssd/sumit/data/
+    all_images_path: /client-data-images/
+    all_annotations_path: /annotations-10/
+    cropped_images_path: /cropped_images/
+    threshold: 0
+    image_size: 0
+    valid_size: 0.15
+
+path:
+    packet_lookup: /home/sumit-tyagi/sumit-ssd/sumit/data/csvs/lookup.csv
+
+
+classification_model_training:
+    # input directories with cropped images (input_data_directory should have train and valid as sub-folders)
+    input_data_directory: /home/sumit-tyagi/sumit-ssd/sumit/data/cropped_images/1020_0threshold_0image_size_45folders/
+    test_directory: /home/sumit-tyagi/sumit-ssd/sumit/data/cropped_images/1020_0threshold_0image_size_45folders/valid/
+    
+    # image pre-processing
+    image_size: 128
+    width_shift_range: 0.2
+    height_shift_range: 0.2
+    shear_range: 0.2
+    zoom_range: 0.2
+    
+    # model architecture
+    pretrained_base: InceptionResNetV2
+    train_layers: []    # ['block5_conv3', 'block5_conv2', 'block5_conv1']
+    train_batchnormalization: True
+    stack_layers: [256]
+    n_classes: 45
+    
+    # model training
+    learning_rate: 0.0002
+    loss: categorical_crossentropy
+    epochs: 1
+    class_weight_lower: 1
+    class_weight_upper: 100
+    use_class_weights: True
+    batch_size: 128
+    use_callback_red_learning_rate: True
+    use_callback_early_stopping: True
+    
+    # saving model
+    save_base_dir: /home/sumit-tyagi/sumit-ssd/sumit/data/model_files/sub_brand_classification/
+
+
+mlflow_logging:
+    artifacts_location: file:///media/premium/common-biscuit/model_tracking/artifacts
+    uri_train_valid: file:///media/premium/common-biscuit/model_tracking/experiments
+    port: 5050
+    host: localhost
+    temp_artifacts_location: /home/sumit-tyagi/sumit-ssd/common-biscuit/model_tracking/artifacts_temp/
+    experiment_name: "classify_run_2"
+...
