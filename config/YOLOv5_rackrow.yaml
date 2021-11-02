@@ -4,7 +4,7 @@ yolov5_train:
   cfg: ''  #model.yaml path
   data: '../config/data_config/rackrow.yaml'  #dataset.yaml path
   hyp: '../config/hyps/hyp.scratch.yaml'  #hyperparameters path
-  epochs: 500
+  epochs: 150
   batch_size: 16
   imgsz: 640  #train, val image size (pixels)
   rect: False #rectangular training
@@ -23,7 +23,7 @@ yolov5_train:
   sync_bn: False  #use SyncBatchNorm, only available in DDP mode
   workers: 8  #maximum number of dataloader workers
   project: '../runs/new_rackrow/train'  #save to project/name
-  name: 'exp'
+  name: 'main_exp_all'
   exist_ok: False  #existing project/name ok, do not increment
   quad:  #quad dataloader
   linear_lr: False
@@ -38,7 +38,7 @@ yolov5_train:
   artifact_alias: 'latest'  #W&B: Version of dataset artifact to use
 
 yolov5_detect:
-  weights: '/media/premium/common-biscuit/main/planogram_biscuit/runs/new_rackrow/train/exp4/weights/best.pt'   #model.pt path(s)
+  weights: '/media/premium/common-biscuit/main/planogram_biscuit/runs/new_rackrow/train/main_exp_all2/weights/best.pt'   #model.pt path(s)
   source: '/media/premium/common-biscuit/main/planogram_biscuit/data/rackrow_dataset/images/test'
   imgsz: [640]
   conf_thres: 0.50  #object confidence threshold

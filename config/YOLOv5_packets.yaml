@@ -4,7 +4,7 @@ yolov5_train:
   cfg: ''  #model.yaml path
   data: '../config/data_config/packets.yaml'  #dataset.yaml path
   hyp: '../config/hyps/hyp.scratch.yaml'  #hyperparameters path
-  epochs: 3
+  epochs: 200
   batch_size: 8
   imgsz: 640  #train, val image size (pixels)
   rect: False #rectangular training
@@ -23,12 +23,12 @@ yolov5_train:
   sync_bn: False  #use SyncBatchNorm, only available in DDP mode
   workers: 8  #maximum number of dataloader workers
   project: '../runs/packets/train'  #save to project/name
-  name: 'exp'
+  name: 'main_exp_all'
   exist_ok: False  #existing project/name ok, do not increment
   quad:  #quad dataloader
   linear_lr: False
   label_smoothing: 0.0  #Label smoothing epsilon
-  patience: 100   #EarlyStopping patience (epochs without improvement)
+  patience: 10   #EarlyStopping patience (epochs without improvement)
   freeze: 0  #Number of layers to freeze. backbone=10, all=24
   save_period: -1  #Save checkpoint every x epochs (disabled if < 1)
   local_rank: -1  #DDP parameter, do not modify
@@ -38,25 +38,26 @@ yolov5_train:
   artifact_alias: 'latest'  #W&B: Version of dataset artifact to use
 
 yolov5_detect:
-  weights: '/media/premium/common-biscuit/main/planogram_biscuit/runs/packets/train/main_exp4/weights/best.pt'   #model.pt path(s)
+  weights: '/media/premium/common-biscuit/main/planogram_biscuit/runs/packets/train/main_exp_all/weights/best.pt'   #model.pt path(s)
   source: '/media/premium/common-biscuit/main/planogram_biscuit/data/packets_dataset/images/test/'
   imgsz: [640]
   conf_thres: 0.4  #object confidence threshold
-  iou_thres: 0.45  #IOU threshold for NMS
+  iou_thres: 0.5  #IOU threshold for NMS
   max_det: 1000  # maximum detections per image
   device: ''  # cuda device, i.e. 0 or 0,1,2,3 or cpu
   view_img: False  # show results
   save_txt: False  # save results to *.txt
   save_conf: False  # save confidences in --save-txt labels
   save_crop: False  # save cropped prediction boxes
-  nosave: True  # do not save images/videos
+  nosave: False  # do not save images/videos
   classes:  # filter by class: --class 0, or --class 0 2 3
   agnostic_nms: False  # class-agnostic NMS
   augment: False  # augmented inference
   visualize: False  # visualize features
   update: False  # update all models
   project: '../runs/packets/detect'  # save results to project/name
-  name: 'exp'  # save results to project/name
+  name: 'mai
+  n_exp_all'  # save results to project/name
   exist_ok: False  # existing project/name ok, do not increment
   line_thickness: 3  # bounding box thickness (pixels)
   hide_labels: True  # hide labels

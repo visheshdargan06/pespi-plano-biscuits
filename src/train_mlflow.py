@@ -115,6 +115,8 @@ class Train_YOLOv5:
                 hyp = yaml.safe_load(f)  # load hyps dict
         LOGGER.info(colorstr('hyperparameters: ') + ', '.join(f'{k}={v}' for k, v in hyp.items()))
 
+        self.mlflow_obj.log_params(hyp)
+
         
 
         # Save run settings
@@ -143,6 +145,10 @@ class Train_YOLOv5:
         with torch_distributed_zero_first(LOCAL_RANK):
             data_dict = data_dict or check_dataset(data)  # check if None
         train_path, val_path = data_dict['train'], data_dict['val']
+
+        self.mlflow_obj.log_params({'training_size' : len(os.listdir(train_path))})
+        self.mlflow_obj.log_params({'validation_size' : len(os.listdir(val_path))})
+
         nc = 1 if single_cls else int(data_dict['nc'])  # number of classes
         names = ['item'] if single_cls and len(data_dict['names']) != 1 else data_dict['names']  # class names
         assert len(names) == nc, f'{len(names)} names found for nc={nc} dataset in {data}'  # check
@@ -415,7 +421,7 @@ class Train_YOLOv5:
 
                 # Save model
                 if (not nosave) or (final_epoch and not evolve):  # if save
-                    ckpt = {'epoch': epoch,
+                    ckpt = {'epoch': final_epoch,
                             'best_fitness': best_fitness,
                             'model': deepcopy(de_parallel(model)).half(),
                             'ema': deepcopy(ema.ema).half(),
@@ -454,6 +460,7 @@ class Train_YOLOv5:
                     strip_optimizer(f)  # strip optimizers
                     if f is best:
                         LOGGER.info(f'\nValidating {f}...')
+                        iou_thres=0.65 if is_coco else 0.60
                         results, _, _ = val.run(data_dict,
                                                 batch_size=batch_size // WORLD_SIZE * 2,
                                                 imgsz=imgsz,
@@ -473,11 +480,13 @@ class Train_YOLOv5:
 
         torch.cuda.empty_cache()
         #mlflow logging
-        best_metrics = {'P R mAP_.5 mAP_.5_.95 val_loss_box val_loss_obj val_loss_cls':list(results),  # P, R, mAP@.5, mAP@.5-.95, val_loss(box, obj, cls)
-                        'Precision' : list(results)[0],
-                        ''
-                        'epoch':epoch,
-                        'best_fitness':best_fitness
+        best_metrics = {#'P R mAP_.5 mAP_.5_.95 val_loss_box val_loss_obj val_loss_cls':list(results),  # P, R, mAP@.5, mAP@.5-.95, val_loss(box, obj, cls)
+                        'Precision':list(results)[0],
+                        'Recall':list(results)[1],
+                        'map_.5':list(results)[2],
+                        'val_loss_box':list(results)[4],
+                        'iou_train' : iou_thres,
+                        'epoch':epoch
                         }
         self.mlflow_obj.log_params(best_metrics)
         return results
@@ -637,8 +646,6 @@ if __name__ == "__main__":
     import gc
     gc.collect()
     torch.cuda.empty_cache()
-
-
 
     t = Train_YOLOv5(model_type = 'packets')
     #t.main()

@@ -6,9 +6,10 @@ from PIL import Image
 from tqdm import tqdm
 from xml.etree import ElementTree as ET
 import pandas as pd
+from utils.config import get_config
 
 def get_class(label):
-    config = get_config()
+    config = get_config('classification_crop')
     lookup = pd.read_csv(config['path']['packet_lookup'])
     lookup = lookup.dropna()
     try:
@@ -18,26 +19,7 @@ def get_class(label):
     
     return label
 
-def get_config(file = "cpu_config"):
-    """
-    Get the config from the specified config file.
-    
-    Parameters:
-    file (str): Name of the config file
-    
-    Returns:
-    obj: yaml object    
-    """
 
-    # project_path = ""
-    # config_path = os.path.join(project_path, 
-    #                             "config/" + file + ".yaml")
-
-    config_path = 'crop.yaml'
-    with open(config_path) as file:
-        config = yaml.full_load(file)
-        
-    return config 
 
 def read_annotation(file, exclude=[], use_lookup=True):
     

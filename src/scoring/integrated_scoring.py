@@ -10,18 +10,21 @@ import pickle
 module_path = os.path.abspath(os.path.join('..'))
 if module_path not in sys.path:
     sys.path.append(module_path)
+module_path = os.path.abspath(os.path.join('.'))
+if module_path not in sys.path:
+    sys.path.append(module_path)
 
 from utils.scoring_loaders import image_loader, intermediate_json, final_json
 from utils.config import get_config
 from tensorflow.keras import models
 import numpy as np 
 
-#from detect_modified import Detect_YOLOv5
-#import torch
+from detect_modified import Detect_YOLOv5
+import torch
 
 import gc
 gc.collect()
-#torch.cuda.empty_cache()
+torch.cuda.empty_cache()
 
 class IntegratedScoring:
     def __init__(self, curr_model, index_lower=None, index_upper=None):
@@ -174,3 +177,15 @@ class IntegratedScoring:
             
         else:
             pass
+
+if __name__ == "__main__":
+    print('Scoring Starts...')
+    try:
+        print('Scoring Starts - Packet Detection')
+        scoring_obj = IntegratedScoring(curr_model= 'packets_detection', index_lower=None, index_upper=None)
+        scoring_obj.scoring()
+        print('Scoring Ends - Packet Detection')
+    except Exception as e:
+        print(e)
+        print("Unable to perform packet detections.")
+        sys.exit(1)
