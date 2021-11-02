@@ -5,11 +5,19 @@ import xml.etree.ElementTree as ET
 from PIL import Image
 import pandas as pd
 import numpy as np
+from tqdm import tqdm
     
+module_path = os.path.abspath(os.path.join('.'))
+if module_path not in sys.path:
+    sys.path.append(module_path)
+
 module_path = os.path.abspath(os.path.join('..'))
 if module_path not in sys.path:
     sys.path.append(module_path)
-    
+
+print(sys.path)
+print(os.getcwd())   
+
 from utils.config import get_config
 
     
@@ -67,14 +75,13 @@ class YOLODataPrep:
                                                 int(len(images)*(split['train']+split['validate']))])
 
         if len(train)>0:
-            for train_image_file in train:
+            for train_image_file in tqdm(train):
                 label_file = train_image_file.split(".")[:-1]
                 label_file_txt = '.'.join(label_file) + ".txt"
-                single_label_file = open(self.data_folder + self.model_type + '_dataset/labels/train/' + label_file_txt, 'w')
-
                 label_file = '.'.join(label_file) + ".xml"
                 # annotated images
                 if label_file in os.listdir(self.labels_folder):
+                    single_label_file = open(self.data_folder + self.model_type + '_dataset/labels/train/' + label_file_txt, 'w')
 
                     # saving images to respective folder
                     train_image_folder = self.data_folder + self.model_type + '_dataset/images/train/'
@@ -82,7 +89,7 @@ class YOLODataPrep:
                         i = Image.open(self.images_folder + train_image_file)
                         #i_bw = i.convert('1').copy()
                         #i_bw.save(self.data_folder + 'processed/bw_images/' + image_file)
-                        i.save(train_image_folder)
+                        i.save(train_image_folder + train_image_file)
                     
                     # preparing the labels file
                     label_file_path = self.labels_folder + label_file
@@ -104,17 +111,16 @@ class YOLODataPrep:
 
                         row = cls_id +" "+ str(round(b[0], 5)) + " " + str(round(b[1], 5)) + " " + str(round(b[2], 5)) + " " + str(round(b[3], 5))
                         single_label_file.write(row + '\n')
-                single_label_file.close()
+                    single_label_file.close()
 
         if len(validate)>0:
-            for val_image_file in validate:
+            for val_image_file in tqdm(validate):
                 label_file = val_image_file.split(".")[:-1]
                 label_file_txt = '.'.join(label_file) + ".txt"
-                single_label_file = open(self.data_folder + self.model_type + '_dataset/labels/val/' + label_file_txt, 'w')
-
                 label_file = '.'.join(label_file) + ".xml"
                 # annotated images
                 if label_file in os.listdir(self.labels_folder):
+                    single_label_file = open(self.data_folder + self.model_type + '_dataset/labels/val/' + label_file_txt, 'w')
 
                     # saving images to respective folder
                     val_image_folder = self.data_folder + self.model_type + '_dataset/images/val/'
@@ -122,7 +128,7 @@ class YOLODataPrep:
                         i = Image.open(self.images_folder + val_image_file)
                         #i_bw = i.convert('1').copy()
                         #i_bw.save(self.data_folder + 'processed/bw_images/' + image_file)
-                        i.save(val_image_folder)
+                        i.save(val_image_folder + val_image_file)
                     
                     # preparing the labels file
                     label_file_path = self.labels_folder + label_file
@@ -144,17 +150,16 @@ class YOLODataPrep:
 
                         row = cls_id +" "+ str(round(b[0], 5)) + " " + str(round(b[1], 5)) + " " + str(round(b[2], 5)) + " " + str(round(b[3], 5))
                         single_label_file.write(row + '\n')
-                single_label_file.close()
+                    single_label_file.close()
 
         if len(test)>0:
-            for test_image_file in test:
+            for test_image_file in tqdm(test):
                 label_file = test_image_file.split(".")[:-1]
                 label_file_txt = '.'.join(label_file) + ".txt"
-                single_label_file = open(self.data_folder + self.model_type + '_dataset/labels/test/' + label_file_txt, 'w')
-
                 label_file = '.'.join(label_file) + ".xml"
                 # annotated images
                 if label_file in os.listdir(self.labels_folder):
+                    single_label_file = open(self.data_folder + self.model_type + '_dataset/labels/test/' + label_file_txt, 'w')
 
                     # saving images to respective folder
                     test_image_folder = self.data_folder + self.model_type + '_dataset/images/test/'
@@ -162,7 +167,7 @@ class YOLODataPrep:
                         i = Image.open(self.images_folder + test_image_file)
                         #i_bw = i.convert('1').copy()
                         #i_bw.save(self.data_folder + 'processed/bw_images/' + image_file)
-                        i.save(test_image_folder)
+                        i.save(test_image_folder + test_image_file)
                     
                     # preparing the labels file
                     label_file_path = self.labels_folder + label_file
@@ -184,7 +189,7 @@ class YOLODataPrep:
 
                         row = cls_id +" "+ str(round(b[0], 5)) + " " + str(round(b[1], 5)) + " " + str(round(b[2], 5)) + " " + str(round(b[3], 5))
                         single_label_file.write(row + '\n')
-                single_label_file.close()    
+                    single_label_file.close()    
         
 
 if __name__ == "__main__":

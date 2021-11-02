@@ -233,17 +233,17 @@ class Detect_YOLOv5:
 
                             label_updated = names[c]
                             if self.model_type == 'rackrow':
-                                output_per_img.append({'x1': torch.tensor(xyxy).tolist()[0], 
-                                                        'y1': torch.tensor(xyxy).tolist()[1], 
-                                                        'x2': torch.tensor(xyxy).tolist()[2], 
-                                                        'y2': torch.tensor(xyxy).tolist()[3] })
+                                output_per_img.append({'x1': int(torch.tensor(xyxy).tolist()[0]), 
+                                                        'y1': int(torch.tensor(xyxy).tolist()[1]), 
+                                                        'x2': int(torch.tensor(xyxy).tolist()[2]), 
+                                                        'y2': int(torch.tensor(xyxy).tolist()[3]) })
                                                         
                             elif self.model_type == 'packets':
                                 output_per_img.append({'sub_brand':label_updated, 
-                                                        'x1': torch.tensor(xyxy).tolist()[0], 
-                                                        'y1': torch.tensor(xyxy).tolist()[1], 
-                                                        'x2': torch.tensor(xyxy).tolist()[2], 
-                                                        'y2': torch.tensor(xyxy).tolist()[3] })
+                                                        'x1': int(torch.tensor(xyxy).tolist()[0]), 
+                                                        'y1': int(torch.tensor(xyxy).tolist()[1]), 
+                                                        'x2': int(torch.tensor(xyxy).tolist()[2]), 
+                                                        'y2': int(torch.tensor(xyxy).tolist()[3]) })
 
                 # Print time (inference-only)
                 print(f'{s}Done. ({t3 - t2:.3f}s)')

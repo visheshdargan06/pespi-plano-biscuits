@@ -15,7 +15,7 @@ path:
 
 data_path:
     blob_base_dir: /media/premium/common-biscuit/
-    images_dir: data/vendor_samples/sample_before_after/ # folder for incremental images (need to check the input data stream in production)
+    images_dir: main/planogram_biscuit/data/images_test/ # folder for incremental images (need to check the input data stream in production)
     output_images_folder: op_annotations/ # sub-folder under which annotations would be stored (to be automated later on)
     
 compliance:
@@ -61,10 +61,10 @@ rackrow_detection:
     
     
 sub_brand_detection:
-    model_dir: models/sub_brands_classification/0924_InceptionResNetV2_0.0002LR_40Epoch_47Classes/
-    input_json: data/output/image_annotations/packet_detection/ # output from the packet detection model in json format
+    model_dir: main/planogram_biscuit/model/sub_brand_classification/1021_InceptionResNetV2_0.0002LR_20Epoch_45Classes/
+    input_json: main/planogram_biscuit/data/output/image_annotations/packets_detection/  # output from the packet detection model in json format
     cropped_size: 128  # to be used same as was used in training (would be automated in next iterations)
-    output_dir: data/output/image_annotations/sub_brand_detection/
+    output_dir: main/planogram_biscuit/data/output/image_annotations/sub_brand_detection/
 
 integrated_output:
     sub_brand_output_dir: data/output/image_annotations/sub_brand_detection/

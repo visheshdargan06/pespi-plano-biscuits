@@ -13,15 +13,15 @@ if module_path not in sys.path:
 
 from utils.scoring_loaders import image_loader, intermediate_json, final_json
 from utils.config import get_config
-#from tensorflow.keras import models
-import numpy as np
+from tensorflow.keras import models
+import numpy as np 
 
-from detect_modified import Detect_YOLOv5
-import torch
+#from detect_modified import Detect_YOLOv5
+#import torch
 
 import gc
 gc.collect()
-torch.cuda.empty_cache()
+#torch.cuda.empty_cache()
 
 class IntegratedScoring:
     def __init__(self, curr_model, index_lower=None, index_upper=None):
@@ -61,8 +61,6 @@ class IntegratedScoring:
                 self.class_indices_dict = pickle.load(handle)
             self.class_indices_dict = {value:key for key,value in self.class_indices_dict.items()}
 
-
-
     def predictions_classification(self, save= True):
         '''scoring and saving of the classification models like InceptionResNet-V2'''
         
@@ -79,7 +77,7 @@ class IntegratedScoring:
                 
             # cropping and predicting using classification model
             for j in i['packets']:
-                image_cropped = image.crop([int(j['x1']), int(j['y1']), int(j['x2']), int(j['y2'])])
+                image_cropped = image.crop([float(j['x1']), float(j['y1']), float(j['x2']), float(j['y2'])])
                 image_cropped = image_cropped.resize(size= (self.cropped_size, self.cropped_size))
                 
                 image_cropped = np.array(image_cropped)/255.0
@@ -92,9 +90,6 @@ class IntegratedScoring:
             file_name = self.output_dir + file_name
             
             intermediate_json(i, file_path=file_name)
-
-
-
 
     def predictions_yolo(self):
         '''scoring of the yolo models'''
@@ -123,11 +118,13 @@ class IntegratedScoring:
                         image_result['packets'][i]["y2"] = str(image_result['packets'][i]['y2'])
 
             elif self.curr_model == 'rackrow_detection':
-                for i in range(0, len(image_result['rackrow'])):
-                        image_result['rackrow'][i]["x1"] = str(image_result['rackrow'][i]['x1'])
-                        image_result['rackrow'][i]["y1"] = str(image_result['rackrow'][i]['y1'])
-                        image_result['rackrow'][i]["x2"] = str(image_result['rackrow'][i]['x2'])
-                        image_result['rackrow'][i]["y2"] = str(image_result['rackrow'][i]['y2'])
+                image_result['row_boxes'] = image_result['rackrow']
+                del image_result['rackrow']
+                for i in range(0, len(image_result['row_boxes'])):
+                        image_result['row_boxes'][i]["x1"] = str(image_result['row_boxes'][i]['x1'])
+                        image_result['row_boxes'][i]["y1"] = str(image_result['row_boxes'][i]['y1'])
+                        image_result['row_boxes'][i]["x2"] = str(image_result['row_boxes'][i]['x2'])
+                        image_result['row_boxes'][i]["y2"] = str(image_result['row_boxes'][i]['y2'])
 
             else:
                 pass

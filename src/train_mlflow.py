@@ -474,9 +474,11 @@ class Train_YOLOv5:
         torch.cuda.empty_cache()
         #mlflow logging
         best_metrics = {'P R mAP_.5 mAP_.5_.95 val_loss_box val_loss_obj val_loss_cls':list(results),  # P, R, mAP@.5, mAP@.5-.95, val_loss(box, obj, cls)
+                        'Precision' : list(results)[0],
+                        ''
                         'epoch':epoch,
-                        'best_fitness':best_fitness,
-                        'fi':fi}
+                        'best_fitness':best_fitness
+                        }
         self.mlflow_obj.log_params(best_metrics)
         return results
 
