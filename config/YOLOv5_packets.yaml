@@ -23,7 +23,7 @@ yolov5_train:
   sync_bn: False  #use SyncBatchNorm, only available in DDP mode
   workers: 8  #maximum number of dataloader workers
   project: '../runs/packets/train'  #save to project/name
-  name: 'main_exp_all'
+  name: 'new_main_exp_all'
   exist_ok: False  #existing project/name ok, do not increment
   quad:  #quad dataloader
   linear_lr: False
@@ -38,7 +38,7 @@ yolov5_train:
   artifact_alias: 'latest'  #W&B: Version of dataset artifact to use
 
 yolov5_detect:
-  weights: '/media/premium/common-biscuit/main/planogram_biscuit/runs/packets/train/main_exp_all/weights/best.pt'   #model.pt path(s)
+  weights: '/media/premium/common-biscuit/main/planogram_biscuit/runs/packets/train/main_exp_all2/weights/best.pt'   #model.pt path(s)
   source: '/media/premium/common-biscuit/main/planogram_biscuit/data/packets_dataset/images/test/'
   imgsz: [640]
   conf_thres: 0.4  #object confidence threshold
@@ -56,8 +56,7 @@ yolov5_detect:
   visualize: False  # visualize features
   update: False  # update all models
   project: '../runs/packets/detect'  # save results to project/name
-  name: 'mai
-  n_exp_all'  # save results to project/name
+  name: 'main_exp_all'  # save results to project/name
   exist_ok: False  # existing project/name ok, do not increment
   line_thickness: 3  # bounding box thickness (pixels)
   hide_labels: True  # hide labels
@@ -69,7 +68,7 @@ mlflow_logging:
     uri_train_valid: file:///media/premium/common-biscuit/main/planogram_biscuit/model_tracking/experiments
     port: 5050
     host: localhost
-    temp_artifacts_location: /home/sumit-tyagi/sumit-ssd/common-biscuit/main/planogram_biscuit/model_tracking/artifacts_temp/
+    temp_artifacts_location: /media/premium/common-biscuit/main/planogram_biscuit/model_tracking/artifacts_temp
 
 path:
     data: ../data/

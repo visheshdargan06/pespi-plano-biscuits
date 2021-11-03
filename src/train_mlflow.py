@@ -115,7 +115,14 @@ class Train_YOLOv5:
                 hyp = yaml.safe_load(f)  # load hyps dict
         LOGGER.info(colorstr('hyperparameters: ') + ', '.join(f'{k}={v}' for k, v in hyp.items()))
 
-        self.mlflow_obj.log_params(hyp)
+        self.mlflow_obj.log_params({'Data Augmentation': {'degrees':hyp['degrees'], 
+                                                            'translate':hyp['translate'],
+                                                            'scale':hyp['scale'],
+                                                            'shear':hyp['shear'],
+                                                            'perspective':hyp['perspective'],
+                                                            'flipud':hyp['flipud'],
+                                                            'fliplr':hyp['fliplr'],
+                                                            'mosaic':hyp['mosaic']}})
 
         
 
@@ -637,16 +644,12 @@ class Train_YOLOv5:
         self.mlflow_obj.log_artifact(delete_existing= True)
         self.mlflow_obj.end_session()
 
-
-        
-
-
 if __name__ == "__main__":
     import torch
     import gc
     gc.collect()
     torch.cuda.empty_cache()
 
-    t = Train_YOLOv5(model_type = 'packets')
+    t = Train_YOLOv5(model_type = 'rackrow')
     #t.main()
     t.run()

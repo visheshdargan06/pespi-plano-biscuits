@@ -1,10 +1,12 @@
 import json
 import xml.etree.ElementTree as ET
+from torch._C import dtype
 import xmltodict
-import numpy
+import numpy as np
 import torch
 from torchvision.ops import box_iou
-
+import os
+from tqdm import tqdm
 
 def get_iou_per_image(pred_file, truth_file):
 
@@ -24,24 +26,60 @@ def get_iou_per_image(pred_file, truth_file):
     for i in data_dict['annotation']['object']:
         truth_boxes.append(list(i['bndbox'].values()))
 
-    print("Total true boxes: ", len(truth_boxes))
-    print("Total predicted boxes: ", len(pred_boxes))
+    # print("Total true boxes: ", len(truth_boxes))
+    # print("Total predicted boxes: ", len(pred_boxes))
 
-    pred_boxes = numpy.array(pred_boxes).astype('int')
-    truth_boxes = numpy.array(truth_boxes).astype('int')
+    pred_boxes = np.array(pred_boxes).astype('int')
+    truth_boxes = np.array(truth_boxes).astype('int')
     
     
     pred_boxes = torch.from_numpy(pred_boxes).float()
     truth_boxes = torch.from_numpy(truth_boxes).float()
 
-    return box_iou(pred_boxes, truth_boxes).numpy()
+    try:
+        box_iou_all, detection_score = box_iou(pred_boxes, truth_boxes).np(), len(pred_boxes)*2/(len(truth_boxes) + len(pred_boxes))
+    except:
+        box_iou_all, detection_score = 0, 0
+    return box_iou_all, detection_score
 
 
 
 def get_iou(pred_files, truth_files):
-    pass
+    '''
+    pred_files: list of predicted files
+    truth_files: list of truth files
 
-iou_matrix = get_iou_per_image('/media/premium/common-biscuit/main/planogram_biscuit/data/output/image_annotations/packets_detection/op_annotations/PHOTO-2021-07-21-09-17-10.json', '/media/premium/common-biscuit/main/planogram_biscuit/data/raw/annotations_master/PHOTO-2021-07-21-09-17-10.xml')
+    Returns: dict of iou per image each dict key is the image name, each value is dict with best_iou and detection score
+    '''
 
-best_iou = iou_matrix.max(0)
-print(best_iou.shape)
+    iou_per_image = dict()
+
+    # normalised detection score
+    # detected * 2 / (detected + actual)
+
+
+    for i in os.walk(pred_files):
+        # print(i[2])
+        for j in tqdm(i[2]):
+            iou_matrix, detection_score  = get_iou_per_image(pred_files+j, truth_files+j.split('.')[0]+'.xml')
+            #print(iou_matrix,detection_score)
+            try:
+                best_iou = iou_matrix.max(0)
+            except:
+                best_iou = np.array([])
+
+                
+            print(type(best_iou))
+            iou_per_image[j.split('.')[0]] = {'best_iou' : best_iou, 'detection_score': detection_score}
+
+    return iou_per_image
+
+if __name__=="__main__":
+    pred_files = '/media/premium/common-biscuit/main/planogram_biscuit/data/output/image_annotations/packets_detection/op_annotations/'
+    truth_files = '/media/premium/common-biscuit/main/planogram_biscuit/data/raw/annotations_master/'
+    iou_per_image = get_iou(pred_files,truth_files)
+    print(iou_per_image)
+    with open('/media/premium/common-biscuit/main/planogram_biscuit/data/iou_json/iou_file.json', 'w') as f:
+	    json.dump(iou_per_image, f)
+
+    

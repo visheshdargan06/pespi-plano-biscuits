@@ -1,0 +1,33 @@
+Annotation,Actual,Desired
+chokis_brownie_paquetin_strip,chokis_clasico_paquetin,chokis_clasico_paquetin
+chokis_chocotella_paquetin_strip,,chokis_clasico_paquetin
+,,
+cremax_de_nieve_chocolate,cremax_de_nieve_chocolate_paquetin	,cremax_de_nieve_chocolate
+cremax_de_nieve_chocolate_strip,cremax_de_nieve_chocolate_rollo,cremax_de_nieve_chocolate_strip
+,,
+cremax_de_nieve_fersa,cremax_de_nieve_fresa_paquetin	,cremax_de_nieve_fresa
+cremax_de_nieve_fresa,cremax_de_nieve_fresa_rollo,cremax_de_nieve_fresa
+cremax_de_nieve_fresa_strip,,cremax_de_nieve_fresa_strip
+,,
+cremax_de_nieve_vainilla,cremax_de_nieve_vainilla_paquetin,cremax_de_nieve_vainilla
+cremax_de_nieve_vainilla_strip,cremax_de_nieve_vainilla_rollo,cremax_de_nieve_vainilla
+,,
+emperador_chocolate,emperador_chocolate_paquetin,emperador_chocolate
+emperador_chocolate.png,emperador_chocolate_rollo,emperador_chocolate
+,,
+emperador_combinado,emperador_combinado_rollo - 4,emperador_combinado
+,emperador_combinado_paquetin - 153,
+,,
+emperador_nocturno,emperador_nocturno_paquetin - 131,emperador_nocturno
+,emperador_nocturno_rollo - 4,
+,,
+emperador_nuez,emperador_nuez_paquetin - 414,emperador_nuez
+,,
+emperador_piruetas,emperador_piruetas_paquetin - 684,emperador_piruetas
+,emperador_piruetas_rollo - 55,
+,,
+maravillas,maravillas_bolsa -1,maravillas
+maravillas_strip,maravillas_rollo - 120,maravillas_strip
+,,
+marias_doradas,marias_doradas_paquetin - 5,marias_doradas
+marias_doradas_strip,marias_doradas_rollo - 722,marias_doradas_strip
