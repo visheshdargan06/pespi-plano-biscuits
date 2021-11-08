@@ -96,6 +96,7 @@ class Train_YOLOv5:
         self.upload_dataset = self.config['yolov5_train']['upload_dataset']
         self.bbox_interval = self.config['yolov5_train']['bbox_interval']
         self.artifact_alias = self.config['yolov5_train']['artifact_alias']
+        self.model_name = self.config['yolov5_train']['model_name']
         
         
 
@@ -115,14 +116,16 @@ class Train_YOLOv5:
                 hyp = yaml.safe_load(f)  # load hyps dict
         LOGGER.info(colorstr('hyperparameters: ') + ', '.join(f'{k}={v}' for k, v in hyp.items()))
 
-        self.mlflow_obj.log_params({'Data Augmentation': {'degrees':hyp['degrees'], 
-                                                            'translate':hyp['translate'],
-                                                            'scale':hyp['scale'],
-                                                            'shear':hyp['shear'],
-                                                            'perspective':hyp['perspective'],
-                                                            'flipud':hyp['flipud'],
-                                                            'fliplr':hyp['fliplr'],
-                                                            'mosaic':hyp['mosaic']}})
+
+        self.mlflow_obj.log_params({'model_name':self.model_name})
+        self.mlflow_obj.log_params({'image_degrees':hyp['degrees'], 
+                                        'image_translate':hyp['translate'],
+                                        'image_scale':hyp['scale'],
+                                        'image_shear':hyp['shear'],
+                                        'image_perspective':hyp['perspective'],
+                                        'image_flipud':hyp['flipud'],
+                                        'image_fliplr':hyp['fliplr'],
+                                        'image_mosaic':hyp['mosaic']})
 
         
 
@@ -495,7 +498,7 @@ class Train_YOLOv5:
                         'iou_train' : iou_thres,
                         'epoch':epoch
                         }
-        self.mlflow_obj.log_params(best_metrics)
+        self.mlflow_obj.log_metrics(best_metrics)
         return results
 
 
@@ -650,6 +653,6 @@ if __name__ == "__main__":
     gc.collect()
     torch.cuda.empty_cache()
 
-    t = Train_YOLOv5(model_type = 'rackrow')
+    t = Train_YOLOv5(model_type = 'packets')
     #t.main()
     t.run()

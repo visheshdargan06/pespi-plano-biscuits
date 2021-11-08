@@ -10,7 +10,7 @@ from PIL import Image
 from tqdm import tqdm
 import pandas as pd
 import pickle
-
+import os
 
 class ClassificationModel:
     '''Train the classification model using Pre-Trained models'''
@@ -78,7 +78,8 @@ class ClassificationModel:
         
         try:
             os.mkdir(self.model_save_path)
-        except:
+        except e:
+            print("Can't make model path: ", e)
             pass
         
         # save data dictionary

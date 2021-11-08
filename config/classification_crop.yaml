@@ -2,19 +2,19 @@ image_crop:
     data_folder: /home/sumit-tyagi/sumit-ssd/common-biscuit/main/planogram_biscuit/data/
     all_images_path: raw/all_images/
     all_annotations_path: raw/annotations_master/cleaned/
-    cropped_images_path: /cropped_images/
+    cropped_images_path: cropped_images/
     threshold: 0
     image_size: 0
     valid_size: 0.15
 
 path:
-    packet_lookup: /home/sumit-tyagi/sumit-ssd/common-biscuit/main/planogram_biscuit/data/lookups/packets_lookup.csv
+    packet_lookup: /home/sumit-tyagi/sumit-ssd/common-biscuit/main/planogram_biscuit/data/lookups/packets_classification_lookup.csv
 
 
 classification_model_training:
     # input directories with cropped images (input_data_directory should have train and valid as sub-folders)
-    input_data_directory: /home/sumit-tyagi/sumit-ssd/sumit/data/cropped_images/1020_0threshold_0image_size_45folders/
-    test_directory: /home/sumit-tyagi/sumit-ssd/sumit/data/cropped_images/1020_0threshold_0image_size_45folders/valid/
+    input_data_directory: /home/sumit-tyagi/sumit-ssd/common-biscuit/main/planogram_biscuit/data/cropped_images/1108_0threshold_0image_size_73folders/
+    test_directory: /home/sumit-tyagi/sumit-ssd/common-biscuit/main/planogram_biscuit/data/cropped_images/1108_0threshold_0image_size_73folders/valid/
     
     # image pre-processing
     image_size: 128
@@ -28,12 +28,12 @@ classification_model_training:
     train_layers: []    # ['block5_conv3', 'block5_conv2', 'block5_conv1']
     train_batchnormalization: True
     stack_layers: [256]
-    n_classes: 45
+    n_classes: 73
     
     # model training
     learning_rate: 0.0002
     loss: categorical_crossentropy
-    epochs: 1
+    epochs: 100
     class_weight_lower: 1
     class_weight_upper: 100
     use_class_weights: True
@@ -42,7 +42,7 @@ classification_model_training:
     use_callback_early_stopping: True
     
     # saving model
-    save_base_dir: /home/sumit-tyagi/sumit-ssd/sumit/data/model_files/sub_brand_classification/
+    save_base_dir: /home/sumit-tyagi/sumit-ssd/common-biscuit/main/planogram_biscuit/data/model_files/sub_brand_classification/
 
 
 mlflow_logging:

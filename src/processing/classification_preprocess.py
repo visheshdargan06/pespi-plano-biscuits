@@ -1,4 +1,5 @@
 # creating dataset by cropping annotations from images
+from math import e
 import yaml
 import os
 import random
@@ -157,8 +158,9 @@ class PrepareCropImages:
                 image_name = 'Image ' + str(c+1)
                 try:
                     image.save(f"{curr_folder}/{image_name}.jpg")
-                except:
-                    print('Issue with image')
+                except e:
+                    
+                    print('Issue with image: ', e)
                     
         if sub_folder == 'valid':
             for i in self.image_label_dict_train.keys():

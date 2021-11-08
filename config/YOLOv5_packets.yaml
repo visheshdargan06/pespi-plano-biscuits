@@ -1,6 +1,7 @@
 ---
 yolov5_train:
-  weights: '../model/pretrained_yolo/yolov5s.pt'  #initial weights path
+  model_name: 'yolov5m'
+  weights: '../model/pretrained_yolo/yolov5m.pt'  #initial weights path
   cfg: ''  #model.yaml path
   data: '../config/data_config/packets.yaml'  #dataset.yaml path
   hyp: '../config/hyps/hyp.scratch.yaml'  #hyperparameters path
@@ -23,7 +24,7 @@ yolov5_train:
   sync_bn: False  #use SyncBatchNorm, only available in DDP mode
   workers: 8  #maximum number of dataloader workers
   project: '../runs/packets/train'  #save to project/name
-  name: 'new_main_exp_all'
+  name: 'new_main_exp_all_medium'
   exist_ok: False  #existing project/name ok, do not increment
   quad:  #quad dataloader
   linear_lr: False
