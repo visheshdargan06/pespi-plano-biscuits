@@ -13,7 +13,7 @@ def get_class(label):
     lookup = pd.read_csv(config['path']['packet_lookup'])
     lookup = lookup.dropna()
     try:
-        label = lookup.loc[lookup['label_annotation_file']==label, 'display_label'].values[0]
+        label = lookup.loc[lookup['label_annotation_file']==label, 'label_annotation_file'].values[0]
     except:
         label = None
     
@@ -53,7 +53,7 @@ def read_annotation(file, exclude=[], use_lookup=True):
 class PrepareCropImages:
     
     def __init__(self):
-        self.config = get_config("similarity_config")
+        self.config = get_config("classification_crop")
         self.data_folder = self.config['image_crop']['data_folder']
         self.all_images_path = self.config['image_crop']['all_images_path']
         self.all_annotations_path = self.config['image_crop']['all_annotations_path']

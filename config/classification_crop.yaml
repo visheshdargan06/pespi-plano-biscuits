@@ -1,14 +1,14 @@
 image_crop:
-    data_folder: /home/sumit-tyagi/sumit-ssd/sumit/data/
-    all_images_path: /client-data-images/
-    all_annotations_path: /annotations-10/
+    data_folder: /home/sumit-tyagi/sumit-ssd/common-biscuit/main/planogram_biscuit/data/
+    all_images_path: raw/all_images/
+    all_annotations_path: raw/annotations_master/cleaned/
     cropped_images_path: /cropped_images/
     threshold: 0
     image_size: 0
     valid_size: 0.15
 
 path:
-    packet_lookup: /home/sumit-tyagi/sumit-ssd/sumit/data/csvs/lookup.csv
+    packet_lookup: /home/sumit-tyagi/sumit-ssd/common-biscuit/main/planogram_biscuit/data/lookups/packets_lookup.csv
 
 
 classification_model_training:
