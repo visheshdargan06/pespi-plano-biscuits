@@ -73,11 +73,11 @@ def get_iou(pred_files, truth_files):
     return iou_per_image
 
 if __name__=="__main__":
-    pred_files = '/media/premium/common-biscuit/main/planogram_biscuit/data/output/image_annotations/packets_detection/op_annotations/'
+    pred_files = '/media/premium/common-biscuit/main/planogram_biscuit/data/output/image_annotations/packets_detection/op_annotations_medium/'
     truth_files = '/media/premium/common-biscuit/main/planogram_biscuit/data/raw/annotations_master/'
     iou_per_image = get_iou(pred_files,truth_files)
     print(iou_per_image)
-    with open('/media/premium/common-biscuit/main/planogram_biscuit/data/iou_json/packets_json/iou_file.json', 'w') as f:
+    with open('/media/premium/common-biscuit/main/planogram_biscuit/data/iou_json/packets_json/yolov5_medium_iou_file.json', 'w') as f:
 	    json.dump(iou_per_image, f)
 
     

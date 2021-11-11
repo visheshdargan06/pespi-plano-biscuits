@@ -1,12 +1,14 @@
-# TODO: implement scoring loaders
-
-
-import os
 from PIL import Image
-from utils.config import get_config
+import os
+import sys
 import json
 
-# function to filter image using index (technically select a range of images from a folder)
+module_path = os.path.abspath(os.path.join('..'))
+if module_path not in sys.path:
+    sys.path.append(module_path)
+from utils.config import get_config
+
+
 def filter_images(all_images, index_lower, index_upper):
     '''filter the images on the basis of lower & upper indices'''
 
@@ -21,13 +23,7 @@ def filter_images(all_images, index_lower, index_upper):
     
     return all_images
 
-# image loader function that yields the images in a folder
-    # load paths
-    # iterate over the images in folder
-    # check if that's an image
-    # filter the desired images
-    # open image using PIL and yield it\
-
+    
 def image_loader(folder_path= None, index_lower= None, index_upper= None):
     '''yields the images in the folder'''
     
@@ -48,15 +44,15 @@ def image_loader(folder_path= None, index_lower= None, index_upper= None):
         image = Image.open(image_path)
         width, height = image.size
         yield (i, image, (width, height))
-
-# intermediate json - function to save a json in specified path
+        
+        
 def intermediate_json(p_dict, file_path= None):
     '''saves the intermediate dictionary as json file to the specified folder'''
     
     with open(file_path, 'w') as json_file:
         json.dump(p_dict, json_file)
-
-# function to save final json in specified path
+        
+        
 def final_json(p_dict, json_name):
     '''saving the final integrated json file'''
     
@@ -74,3 +70,5 @@ def final_json(p_dict, json_name):
     
     with open(integrated_dir + json_name, 'w') as json_file:
         json.dump(p_dict, json_file) 
+    
+    

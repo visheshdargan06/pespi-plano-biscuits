@@ -181,11 +181,12 @@ class IntegratedScoring:
 if __name__ == "__main__":
     print('Scoring Starts...')
     try:
-        print('Scoring Starts - Packet Detection')
-        scoring_obj = IntegratedScoring(curr_model= 'packets_detection', index_lower=None, index_upper=None)
+        #print('Scoring Starts - Detection')
+        scoring_obj = IntegratedScoring(curr_model= 'rackrow_detection', index_lower=None, index_upper=None)
         scoring_obj.scoring()
-        print('Scoring Ends - Packet Detection')
+        print(scoring_obj.results)
+        #print('Scoring Ends - Detection')
     except Exception as e:
         print(e)
-        print("Unable to perform packet detections.")
+        print("Unable to perform detections.")
         sys.exit(1)

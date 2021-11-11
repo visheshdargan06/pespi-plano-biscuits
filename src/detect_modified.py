@@ -233,10 +233,11 @@ class Detect_YOLOv5:
 
                             label_updated = names[c]
                             if self.model_type == 'rackrow':
-                                output_per_img.append({'x1': int(torch.tensor(xyxy).tolist()[0]), 
-                                                        'y1': int(torch.tensor(xyxy).tolist()[1]), 
-                                                        'x2': int(torch.tensor(xyxy).tolist()[2]), 
-                                                        'y2': int(torch.tensor(xyxy).tolist()[3]) })
+                                if label_updated != 'complete rack':
+                                    output_per_img.append({'x1': int(torch.tensor(xyxy).tolist()[0]), 
+                                                            'y1': int(torch.tensor(xyxy).tolist()[1]), 
+                                                            'x2': int(torch.tensor(xyxy).tolist()[2]), 
+                                                            'y2': int(torch.tensor(xyxy).tolist()[3]) })
                                                         
                             elif self.model_type == 'packets':
                                 output_per_img.append({'sub_brand':label_updated, 
@@ -294,5 +295,5 @@ class Detect_YOLOv5:
 
 
 if __name__ == "__main__":
-    detect = Detect_YOLOv5(model_type='packets')
-    detect.main()
+    detect = Detect_YOLOv5(model_type='rackrow')
+    print(detect.main())
