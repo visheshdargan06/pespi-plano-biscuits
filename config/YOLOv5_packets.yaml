@@ -39,8 +39,8 @@ yolov5_train:
   artifact_alias: 'latest'  #W&B: Version of dataset artifact to use
 
 yolov5_detect:
-  weights: '/media/premium/common-biscuit/main/planogram_biscuit/runs/packets/train/main_exp_all2/weights/best.pt'   #model.pt path(s)
-  source: '/media/premium/common-biscuit/main/planogram_biscuit/data/packets_dataset/images/test/'
+  weights: '/media/premium/common-biscuit/main/planogram_biscuit/runs/packets/train/new_main_exp_all_medium/weights/best.pt'   #model.pt path(s)
+  source: '/media/premium/common-biscuit/main/planogram_biscuit/data/rackrow_dataset/images/test/'
   imgsz: [640]
   conf_thres: 0.4  #object confidence threshold
   iou_thres: 0.5  #IOU threshold for NMS
@@ -50,14 +50,14 @@ yolov5_detect:
   save_txt: False  # save results to *.txt
   save_conf: False  # save confidences in --save-txt labels
   save_crop: False  # save cropped prediction boxes
-  nosave: False  # do not save images/videos
+  nosave: True  # do not save images/videos
   classes:  # filter by class: --class 0, or --class 0 2 3
   agnostic_nms: False  # class-agnostic NMS
   augment: False  # augmented inference
   visualize: False  # visualize features
   update: False  # update all models
   project: '../runs/packets/detect'  # save results to project/name
-  name: 'main_exp_all'  # save results to project/name
+  name: 'new_main_exp_all_medium'  # save results to project/name
   exist_ok: False  # existing project/name ok, do not increment
   line_thickness: 3  # bounding box thickness (pixels)
   hide_labels: True  # hide labels
@@ -74,13 +74,13 @@ mlflow_logging:
 path:
     data: ../data/
     validation_images: 
-    project_folder: /media/drive/rajat/planogram_compliance/
-    model_setup: /mnt/common/model_setup/
-    model: /mnt/common/models/
-    packets_folder: packets_yolo/
-    complete_rack_folder: complete_rack_yolo/
-    rack_row_folder: rack_row_yolo/
-    sub_brands_folder: sub_brands_yolo/
+    # project_folder: /media/drive/rajat/planogram_compliance/
+    # model_setup: /mnt/common/model_setup/
+    # model: /mnt/common/models/
+    # packets_folder: packets_yolo/
+    # complete_rack_folder: complete_rack_yolo/
+    # rack_row_folder: rack_row_yolo/
+    # sub_brands_folder: sub_brands_yolo/
     lookup_file: 'lookups/packets_lookup.csv'
   
   

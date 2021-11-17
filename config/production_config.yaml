@@ -15,8 +15,8 @@ path:
 
 data_path:
     blob_base_dir: /media/premium/common-biscuit/
-    images_dir: main/planogram_biscuit/data/images_test/ # folder for incremental images (need to check the input data stream in production)
-    output_images_folder: op_annotations/ # sub-folder under which annotations would be stored (to be automated later on)
+    images_dir: main/planogram_biscuit/data/rackrow_dataset/images/test/ # folder for incremental images (need to check the input data stream in production)
+    output_images_folder: op_annotations_rack/ # sub-folder under which annotations would be stored (to be automated later on)
     
 compliance:
     path:
@@ -67,7 +67,7 @@ sub_brand_detection:
     output_dir: main/planogram_biscuit/data/output/image_annotations/sub_brand_detection/
 
 integrated_output:
-    sub_brand_output_dir: data/output/image_annotations/sub_brand_detection/
-    rackrow_output_dir: data/output/image_annotations/rackrow_detection/
-    integrated_dir: data/output/image_annotations/integrated/
+    sub_brand_output_dir: main/planogram_biscuit/data/output/image_annotations/sub_brand_detection/
+    rackrow_output_dir: main/planogram_biscuit/data/output/image_annotations/rackrow_detection/
+    integrated_dir: main/planogram_biscuit/data/output/image_annotations/integrated/
 ...

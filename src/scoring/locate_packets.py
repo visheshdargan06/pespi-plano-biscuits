@@ -24,7 +24,7 @@ thresholds = config['compliance']['threshold']
 
 
 def find_packet_positions(data):
-    rack_rows, packets = locator.get_rows_packets_predictions(data)
+    rack_rows, packets, complete_rack = locator.get_rows_packets_predictions(data)
     rack_rows = locator.get_sorted_rows(rack_rows)
     avg_row_height = locator.get_average_height(rack_rows)
     
@@ -32,13 +32,13 @@ def find_packet_positions(data):
                                                  thresholds['missing_row_thresh'],
                                                  thresholds['missing_mid_row_thresh'])
     
-    first_row = locator.find_missing_first_row(rack_rows, avg_row_height, packets, 
-                                               thresholds['missing_top_row_packet_overlap_thresh'], 
-                                               thresholds['top_row_additional_pixels'], 
-                                               thresholds['top_row_additional_thresh_pixels'])
+    # first_row = locator.find_missing_first_row_modified(rack_rows, avg_row_height, packets, complete_rack,
+    #                                            thresholds['missing_top_row_packet_overlap_thresh'], 
+    #                                            thresholds['top_row_additional_pixels'], 
+    #                                            thresholds['top_row_additional_thresh_pixels'])
     
-    if first_row is not None:
-        rack_rows = np.insert(rack_rows, 0, first_row)
+    # if first_row is not None:
+    #     rack_rows = np.insert(rack_rows, 0, first_row)
 
     # Check which packet is in which row.
     packet_positions = locator.check_packet_row(rack_rows, packets, 
@@ -58,7 +58,6 @@ def find_packet_positions(data):
                         
     # Remove blank bounding boxes that overlap other boxes.
     updated_packet_positions = locator.remove_overlapping_bbox(overlap_blank, updated_packet_positions)
-    
     return updated_packet_positions, rack_rows
 
 def locate_packets(pred_dir, predictions):

@@ -5,7 +5,7 @@ import numpy as np
 import math
 from utils.bb_utils import get_width, get_height
 from scoring.Evaluator import Evaluator
-from utils.custom_datatypes import Packet, Row
+from utils.custom_datatypes import Packet, Row, CompleteRack
 
 
 class Locator:
@@ -20,7 +20,7 @@ class Locator:
         return np.array(sorted(rack_rows, key=lambda x: x.get_bbox()[1]))
     
     def get_average_height(self, boxes):
-        return np.mean(np.array([get_height(box.get_bbox()) for box in boxes]))
+        return np.mean(np.array([get_height(box.get_bbox()) for box in boxes[1:]]))
     
     def get_average_width(self, boxes):
         return np.mean(np.array([get_width(box.get_bbox()) for box in boxes]))
@@ -79,10 +79,19 @@ class Locator:
                                   int(packet['x2']), 
                                   int(packet['y2'])))
 
+        complete_rack = []
+
+        for rack in data['complete_rack']:
+            complete_rack.append(CompleteRack(int(rack['x1']), 
+                                  int(rack['y1']), 
+                                  int(rack['x2']), 
+                                  int(rack['y2'])))
+
         packets = np.array(packets)
         rack_rows = np.array(rack_rows)
+        complete_rack = np.array(complete_rack)
 
-        return rack_rows, packets
+        return rack_rows, packets,complete_rack
     
     def get_rows_packets_annotations(root_element):
         rack_rows = []
@@ -157,15 +166,35 @@ class Locator:
                 return row
         return None
 
-    """
-    def find_missing_first_row_modified(self, rack_rows, avg_height, packets):
-        # Check complete rack
-        # if Complete_Rack(y1) - Top_Row(y1) > avg_row_height:
-        #   add top row
-        # else:
-        #   None 
-        # Check if any packets in this row
-    """
+    
+    def find_missing_first_row_modified(self, rack_rows, avg_row_height, packets, complete_rack, overlap_thresh=0.7, add_pixels=25, thresh_pixels=50):
+        if (complete_rack[0].get_bbox()[1] + rack_rows[0].get_bbox()[1]) > avg_row_height:
+            try:
+                x1 = np.max(np.array([row.get_bbox()[0] for row in rack_rows])) 
+            except Exception as e:
+                print("No rack rows present")
+                return None
+            y1 = rack_rows[0].get_bbox()[1] - avg_row_height
+            if y1 > thresh_pixels:
+                y1 = y1 - add_pixels
+            x2 = np.max(np.array([row.get_bbox()[2] for row in rack_rows]))
+            y2 = rack_rows[0].get_bbox()[1]
+            row = Row(x1, y1, x2, y2)
+            # check if y1 coordinate becoame -ve.
+            if y1 < 0:
+                return None
+            
+            # check if any packets in this row.
+            for packet in packets:
+                box_area = Evaluator._getArea(packet.get_bbox())
+                intersection_area = Evaluator._getIntersectionArea(row.get_bbox(), packet.get_bbox())
+                overlap_perc = intersection_area/box_area
+
+                if overlap_perc > overlap_thresh:
+                    return row
+            return None
+        else:
+            return None
     
     def find_missing_row_prev_after(self, rack_rows_prev, avg_height_prev, rack_rows_after, image_height,
                                     overlap_thresh=0.7, add_pixels=25, thresh_pixels=50, top_row_compression_thres=0.7):

@@ -19,12 +19,11 @@ from utils.config import get_config
 from tensorflow.keras import models
 import numpy as np 
 
-from detect_modified import Detect_YOLOv5
-import torch
-
-import gc
-gc.collect()
-torch.cuda.empty_cache()
+# from detect_modified_1 import Detect_YOLOv5
+# import torch
+# import gc
+# gc.collect()
+# torch.cuda.empty_cache()
 
 class IntegratedScoring:
     def __init__(self, curr_model, index_lower=None, index_upper=None):
@@ -36,7 +35,7 @@ class IntegratedScoring:
         self.blob_base_dir = self.config['data_path']['blob_base_dir']
         
         ###### productionise changes required for 2 folder ########
-        #self.images_dir = self.blob_base_dir + self.config['data_path']['images_dir']
+        self.images_dir = self.blob_base_dir + self.config['data_path']['images_dir']
         self.output_images_folder = self.config['data_path']['output_images_folder']
 
         if self.curr_model in ['packets_detection', 'rackrow_detection']:  
@@ -122,7 +121,8 @@ class IntegratedScoring:
 
             elif self.curr_model == 'rackrow_detection':
                 image_result['row_boxes'] = image_result['rackrow']
-                del image_result['rackrow']
+                image_result['row_boxes_confidence'] = image_result['rackrow_confidence']
+                del image_result['rackrow'], image_result['rackrow_confidence']
                 for i in range(0, len(image_result['row_boxes'])):
                         image_result['row_boxes'][i]["x1"] = str(image_result['row_boxes'][i]['x1'])
                         image_result['row_boxes'][i]["y1"] = str(image_result['row_boxes'][i]['y1'])
@@ -157,9 +157,13 @@ class IntegratedScoring:
             with open(self.rackrow_output_dir + json_output, 'r') as json_file:
                 rack_row_output = json.load(json_file)
         
-            sub_brand_output['row_boxes'] = rack_row_output['rackrow']
+            sub_brand_output['row_boxes'] = rack_row_output['row_boxes']
+            sub_brand_output['row_boxes_confidence'] = rack_row_output['row_boxes_confidence']
+
+            sub_brand_output['complete_rack'] = rack_row_output['complete_rack']
+            sub_brand_output['complete_rack_confidence'] = rack_row_output['complete_rack_confidence']
             sub_brand_output['image_dir'] = self.images_dir
-            
+
             final_json(sub_brand_output, json_output)
 
     def scoring(self):
@@ -182,9 +186,9 @@ if __name__ == "__main__":
     print('Scoring Starts...')
     try:
         #print('Scoring Starts - Detection')
-        scoring_obj = IntegratedScoring(curr_model= 'rackrow_detection', index_lower=None, index_upper=None)
+        scoring_obj = IntegratedScoring(curr_model= 'integration', index_lower=None, index_upper=None)
         scoring_obj.scoring()
-        print(scoring_obj.results)
+        #print(scoring_obj.results)
         #print('Scoring Ends - Detection')
     except Exception as e:
         print(e)
