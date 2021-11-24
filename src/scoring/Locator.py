@@ -8,7 +8,7 @@ from scoring.Evaluator import Evaluator
 from utils.custom_datatypes import Packet, Row, CompleteRack
 
 
-class Locator:
+class Locator: 
     
     
     def __init__(self):
@@ -168,10 +168,10 @@ class Locator:
 
     
     def find_missing_first_row_modified(self, rack_rows, avg_row_height, packets, complete_rack, overlap_thresh=0.7, add_pixels=25, thresh_pixels=50):
-        if (complete_rack[0].get_bbox()[1] + rack_rows[0].get_bbox()[1]) > avg_row_height:
+        if abs(complete_rack[0].get_bbox()[1] - rack_rows[0].get_bbox()[1]) > avg_row_height:
             try:
                 x1 = np.max(np.array([row.get_bbox()[0] for row in rack_rows])) 
-            except Exception as e:
+            except Exception as e:  
                 print("No rack rows present")
                 return None
             y1 = rack_rows[0].get_bbox()[1] - avg_row_height

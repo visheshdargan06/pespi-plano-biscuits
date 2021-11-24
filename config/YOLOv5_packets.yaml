@@ -40,7 +40,7 @@ yolov5_train:
 
 yolov5_detect:
   weights: '/media/premium/common-biscuit/main/planogram_biscuit/runs/packets/train/new_main_exp_all_medium/weights/best.pt'   #model.pt path(s)
-  source: '/media/premium/common-biscuit/main/planogram_biscuit/data/rackrow_dataset/images/test/'
+  source: '/media/premium/common-biscuit/main/planogram_biscuit/data/raw/all_images_12Nov'
   imgsz: [640]
   conf_thres: 0.4  #object confidence threshold
   iou_thres: 0.5  #IOU threshold for NMS

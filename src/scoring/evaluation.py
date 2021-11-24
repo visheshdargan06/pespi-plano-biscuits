@@ -10,7 +10,7 @@ from scoring.BoundingBox import BoundingBox
 from scoring.BoundingBoxes import BoundingBoxes
 import scoring.Evaluator
 
-
+ 
 class MultiEvaluation:
     
     def __init__(self):

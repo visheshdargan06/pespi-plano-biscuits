@@ -1,6 +1,6 @@
 ---
 path:
-    blob_base_dir: /mnt/common
+    blob_base_dir: /media/premium/common-biscuit/
     data: /mnt/common/data/
     labels: labels/0824/
     test: test/0916/
@@ -14,15 +14,15 @@ path:
     packet_lookup: /mnt/common/data/lookups/rack_model_lookup.csv
 
 data_path:
-    blob_base_dir: /media/premium/common-biscuit/
-    images_dir: main/planogram_biscuit/data/rackrow_dataset/images/test/ # folder for incremental images (need to check the input data stream in production)
-    output_images_folder: op_annotations_rack/ # sub-folder under which annotations would be stored (to be automated later on)
+    blob_base_dir: /media/premium/common-biscuit/ 
+    images_dir: main/planogram_biscuit/data/raw/all_images_12Nov/ # folder for incremental images (need to check the input data stream in production)
+    output_images_folder: op_annotations_new/ # sub-folder under which annotations would be stored (to be automated later on)
     
 compliance:
     path:
         image_output: data/output/image_annotations/test_outputs
         output: data/output/compliance/location_pickles/test_loader
-        output_prev_after_comparsion: data/output/compliance/prev_after/
+        output_prev_after_comparsion: main/planogram_biscuit/data/output/compliance/prev_after/
     threshold:
         packet_row_overlap_thresh: 0.7
         packet_top_row_overlap_thresh: 0.5

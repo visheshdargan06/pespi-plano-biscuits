@@ -14,25 +14,25 @@ if __name__ == "__main__":
 
     print('Switched to 2nd Docker')
 
-    try:
-        print('Scoring Starts - Sub Brand Detection')
-        scoring_obj = IntegratedScoring(curr_model= 'sub_brand_detection', index_lower=None, index_upper=None)
-        scoring_obj.scoring()
-        print('Scoring Ends - Sub Brand Detection')
-    except Exception as e:
-        print(e)
-        print("Unable to run Sub-brand detection.")
-        sys.exit(1)
+    # try:
+    #     print('Scoring Starts - Sub Brand Detection')
+    #     scoring_obj = IntegratedScoring(curr_model= 'sub_brand_detection', index_lower=None, index_upper=None)
+    #     scoring_obj.scoring()
+    #     print('Scoring Ends - Sub Brand Detection')
+    # except Exception as e:
+    #     print(e)
+    #     print("Unable to run Sub-brand detection.")
+    #     sys.exit(1)
         
-    try:
-        print('Model Integration Starts')
-        scoring_obj = IntegratedScoring(curr_model= 'integration', index_lower=None, index_upper=None)
-        scoring_obj.scoring()
-        print('Model Integration Completes')
-    except Exception as e:
-        print(e)
-        print("Unable to integrate model results.")
-        sys.exit(1)
+    # try:
+    #     print('Model Integration Starts')
+    #     scoring_obj = IntegratedScoring(curr_model= 'integration', index_lower=None, index_upper=None)
+    #     scoring_obj.scoring()
+    #     print('Model Integration Completes')
+    # except Exception as e:
+    #     print(e)
+    #     print("Unable to integrate model results.")
+    #     sys.exit(1)
     
     try:
         print("Locating packet positions.")    

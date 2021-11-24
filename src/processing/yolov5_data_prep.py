@@ -15,12 +15,11 @@ module_path = os.path.abspath(os.path.join('..'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
-print(sys.path)
-print(os.getcwd())   
+#print(sys.path)
+#print(os.getcwd())   
 
 from utils.config import get_config
 
-    
 class YOLODataPrep:
     '''
         prepares the data to be consumed by YOLO and other models
@@ -33,18 +32,14 @@ class YOLODataPrep:
         model_type: either of packets, sub_brands_without_others, sub_brands_with_others, complete_rack, rack_row
         '''
         self.model_type = model_type
-        if self.model_type == 'rackrow':
-            self.config = get_config("YOLOv5_rackrow")
-        elif self.model_type == 'packets':
-            self.config = get_config("YOLOv5_packets")
+        self.config = get_config("production_config_main")
         
-        self.data_folder = self.config['path']['data']
+        self.data_folder = self.config['path']['blob_base_dir'] + self.config['path']['data']
         self.validation_folder = self.config['path']['validation_images']  # to skip these images
-        self.images_folder = self.data_folder + "raw/all_images/"
-        self.labels_folder = self.data_folder + "raw/annotations_master/"
+        self.images_folder = self.data_folder + "raw/all_images_12Nov/"
+        self.labels_folder = self.data_folder + "raw/annotations_master_642/"
         
-        
-        self.lookup_file = self.data_folder + self.config['path']['lookup_file']
+        self.lookup_file = self.data_folder + self.config['path'][self.model_type+'_lookup']
         
         self.class_dict_modified = pd.read_csv(self.lookup_file,
                                                index_col= 'label_annotation_file')['label_index'].dropna().to_dict()
@@ -70,13 +65,21 @@ class YOLODataPrep:
         '''
         prepares and store the labelled file in yolo format
         '''
-        images = os.listdir(self.images_folder)
-        train, validate, test = np.split(images, [int(len(images)*split['train']), 
-                                                int(len(images)*(split['train']+split['validate']))])
+        images = os.listdir(self.labels_folder)
+        if 'validate' in split:
+            train, validate, test = np.split(images, [int(len(images)*split['train']), 
+                                                    int(len(images)*(split['train']+split['validate']))])
+            print(len(train), len(validate),len(test))
+        else:
+            train, validate, test = np.split(images, [int(len(images)*split['train']), 
+                                                    int(len(images))])
+            print(len(train), len(validate),len(test))
+
 
         if len(train)>0:
-            for train_image_file in tqdm(train):
-                label_file = train_image_file.split(".")[:-1]
+            for train_file in tqdm(train):
+                label_file = train_file.split(".")[:-1]
+                train_image_file = '.'.join(label_file) + '.jpg'
                 label_file_txt = '.'.join(label_file) + ".txt"
                 label_file = '.'.join(label_file) + ".xml"
                 # annotated images
@@ -114,8 +117,9 @@ class YOLODataPrep:
                     single_label_file.close()
 
         if len(validate)>0:
-            for val_image_file in tqdm(validate):
-                label_file = val_image_file.split(".")[:-1]
+            for val_file in tqdm(validate):
+                label_file = val_file.split(".")[:-1]
+                val_image_file = '.'.join(label_file) + '.jpg'
                 label_file_txt = '.'.join(label_file) + ".txt"
                 label_file = '.'.join(label_file) + ".xml"
                 # annotated images
@@ -153,8 +157,9 @@ class YOLODataPrep:
                     single_label_file.close()
 
         if len(test)>0:
-            for test_image_file in tqdm(test):
-                label_file = test_image_file.split(".")[:-1]
+            for test_file in tqdm(test):
+                label_file = test_file.split(".")[:-1]
+                test_image_file = '.'.join(label_file) + '.jpg'
                 label_file_txt = '.'.join(label_file) + ".txt"
                 label_file = '.'.join(label_file) + ".xml"
                 # annotated images
@@ -193,5 +198,6 @@ class YOLODataPrep:
         
 
 if __name__ == "__main__":
-    data_prep = YOLODataPrep(model_type='packets')
-    data_prep.prepare_data(split = {'train':0.7, 'validate':0.2, 'test':0.1})
+    data_prep = YOLODataPrep(model_type='rackrow')
+    data_prep.prepare_data(split = {'train':1})
+    print(data_prep.class_dict_modified)

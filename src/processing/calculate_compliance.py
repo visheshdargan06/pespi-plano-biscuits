@@ -26,7 +26,7 @@ from utils.custom_datatypes import Packet, Row
 
 def standardize_names(all_names, prev_after):
     '''creates a dataframe with original name and the corresponding name that can be later used for comparsion
-        works by extracting only the names that have max of prev/after e.g prev, prev(1), prev(2)
+        only the names works by extracting that have max of prev/after e.g prev, prev(1), prev(2)
     '''
     
     df = pd.DataFrame(columns = ['actual_name'])
@@ -337,6 +337,8 @@ class Compliance:
                 pass
             
             else:
+                # TODO: handle the case to go with one rack
+                
                 # handling cases where more racks in the after image
                 if len(rack_rows_after) > len(rack_rows_prev):
                     packets_prev = self.handle_missing_top_row(rack_rows_prev=rack_rows_prev, rack_rows_after=rack_rows_after, 
@@ -419,9 +421,11 @@ class Compliance:
     
     
 class RenderFinalResults:
-    def __init__(self, folder, json_outputs):
+    def __init__(self, folder):
         self.folder = folder
-        self.json_outputs = json_outputs
+        self.json_outputs=os.listdir(folder)
+         
+        
    
     def plot_image(self, image_path, packets, ax):
         image = plt.imread(image_path)
@@ -452,4 +456,7 @@ class RenderFinalResults:
             fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(30,30))
             self.plot_image(data['rendering_detection']['image_path_prev'], data['rendering_detection']['packets_previous'], ax1)
             self.plot_image(data['rendering_detection']['image_path_after'], data['rendering_detection']['packets_after'], ax2)  
-            plt.show();
+            # print(plt)
+
+            plt.savefig(os.path.join('/media/premium/common-biscuit/main/planogram_biscuit/data/raw/compliance_output',i.split(".")[0]+'.jpg'))
+            print(i.split(".")[0]+'.jpg','Saved')

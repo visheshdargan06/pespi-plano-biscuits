@@ -22,9 +22,57 @@ config = get_config("production_config")
 locator = Locator()
 thresholds = config['compliance']['threshold']
 
+def get_row_rack_overlap(rack, rack_rows, overlap_thresh=0.7):
+    mask_list = []
+    for row_num, row in enumerate(rack_rows):
+        box_area = Evaluator._getArea([int(row['x1']), 
+                                 int(row['y1']), 
+                                 int(row['x2']), 
+                                 int(row['y2'])])
+        intersection_area = Evaluator._getIntersectionArea([int(rack['x1']), 
+                                 int(rack['y1']), 
+                                 int(rack['x2']), 
+                                 int(rack['y2'])], [int(row['x1']), 
+                                 int(row['y1']), 
+                                 int(row['x2']), 
+                                 int(row['y2'])])
+
+        overlap_perc = intersection_area/box_area
+
+        if overlap_perc > overlap_thresh:
+            mask_list.append(True)
+        else:
+            mask_list.append(False)
+        
+    return np.array(mask_list)
+
+def get_one_rack(output_dict, row_overlap_thresh=0.7):
+    updated_dict = {}
+    if len(output_dict['complete_rack'])>1:
+        updated_dict['image_name'] = output_dict['image_name']
+        max_conf = 0
+        for i, conf in enumerate(output_dict['complete_rack_confidence']):
+            if conf > max_conf:
+                max_conf = conf
+                max_index = i
+
+        updated_dict['complete_rack'] = [output_dict['complete_rack'][max_index]]
+        updated_dict['complete_rack_confidence'] = [max_conf]
+
+        mask_list = get_row_rack_overlap(output_dict['complete_rack'][max_index], output_dict['rackrow'], row_overlap_thresh)
+        print(mask_list)
+        updated_dict['rackrow'] = (np.array(output_dict['rackrow'])[mask_list]).tolist()
+        updated_dict['rackrow_confidence'] = np.array(output_dict['rackrow_confidence'])[mask_list].tolist()
+
+        return updated_dict
+        
+    else:
+        return output_dict
 
 def find_packet_positions(data):
-    rack_rows, packets, complete_rack = locator.get_rows_packets_predictions(data)
+    # Handle two racks
+    updated_data = get_one_rack(data)
+    rack_rows, packets, complete_rack = locator.get_rows_packets_predictions(updated_data)
     rack_rows = locator.get_sorted_rows(rack_rows)
     avg_row_height = locator.get_average_height(rack_rows)
     
@@ -60,7 +108,7 @@ def find_packet_positions(data):
     updated_packet_positions = locator.remove_overlapping_bbox(overlap_blank, updated_packet_positions)
     return updated_packet_positions, rack_rows
 
-def locate_packets(pred_dir, predictions):
+def locate_packets(pred_dir, predictions): 
     
     location_dict = {}
     for prediction in predictions:

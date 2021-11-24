@@ -24,33 +24,38 @@ from utils.torch_utils import load_classifier, select_device, time_sync
 from utils.config import get_config
 
 class Detect_YOLOv5:
-    def __init__(self, model_type):
+    def __init__(self, model_type, model_version='medium'):
         self.model_type = model_type
-        self.config = get_config("YOLOv5_"+self.model_type)
-        self.weights = self.config['yolov5_detect']['weights']  
-        self.source = self.config['yolov5_detect']['source']
-        self.imgsz = self.config['yolov5_detect']['imgsz']
-        self.conf_thres = self.config['yolov5_detect']['conf_thres']
-        self.iou_thres = self.config['yolov5_detect']['iou_thres']
-        self.max_det = self.config['yolov5_detect']['max_det']
-        self.device = self.config['yolov5_detect']['device']
-        self.view_img = self.config['yolov5_detect']['view_img']
-        self.save_txt = self.config['yolov5_detect']['save_txt']
-        self.save_conf = self.config['yolov5_detect']['save_conf']
-        self.save_crop = self.config['yolov5_detect']['save_crop']
-        self.nosave = self.config['yolov5_detect']['nosave'] 
-        self.classes = self.config['yolov5_detect']['classes']   
-        self.agnostic_nms = self.config['yolov5_detect']['agnostic_nms']  
-        self.augment = self.config['yolov5_detect']['augment']
-        self.visualize = self.config['yolov5_detect']['visualize']
-        self.update = self.config['yolov5_detect']['update']
-        self.project = self.config['yolov5_detect']['project']
-        self.name = self.config['yolov5_detect']['name']
-        self.exist_ok = self.config['yolov5_detect']['exist_ok']
-        self.line_thickness = self.config['yolov5_detect']['line_thickness']
-        self.hide_labels = self.config['yolov5_detect']['hide_labels']
-        self.hide_conf = self.config['yolov5_detect']['hide_conf']
-        self.half = self.config['yolov5_detect']['half']
+        self.detect = get_config("production_config_main")
+        self.config = self.detect["yolov5_detect_"+self.model_type]
+        self.model_version = self.config['model_version']
+        if self.model_version == 'small':
+            self.weights = self.config['weights_small']  
+        else:
+            self.weights = self.config['weights_medium']
+        self.source = self.detect['data_path']['blob_base_dir']+self.detect['data_path']['images_dir']
+        self.imgsz = self.config['imgsz']
+        self.conf_thres = self.config['conf_thres']
+        self.iou_thres = self.config['iou_thres']
+        self.max_det = self.config['max_det']
+        self.device = self.config['device']
+        self.view_img = self.config['view_img']
+        self.save_txt = self.config['save_txt']
+        self.save_conf = self.config['save_conf']
+        self.save_crop = self.config['save_crop']
+        self.nosave = self.config['nosave'] 
+        self.classes = self.config['classes']   
+        self.agnostic_nms = self.config['agnostic_nms']  
+        self.augment = self.config['augment']
+        self.visualize = self.config['visualize']
+        self.update = self.config['update']
+        self.project = self.config['project']
+        self.name = self.config['name']
+        self.exist_ok = self.config['exist_ok']
+        self.line_thickness = self.config['line_thickness']
+        self.hide_labels = self.config['hide_labels']
+        self.hide_conf = self.config['hide_conf']
+        self.half = self.config['half']
 
 
     @torch.no_grad()

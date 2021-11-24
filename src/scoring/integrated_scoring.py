@@ -166,7 +166,7 @@ class IntegratedScoring:
 
             final_json(sub_brand_output, json_output)
 
-    def scoring(self):
+    def scoring(self): 
         '''Final Scoring of the images (includes all the models and their integrations)'''
         
         if self.curr_model in ['packets_detection', 'rackrow_detection']:
@@ -181,6 +181,7 @@ class IntegratedScoring:
             
         else:
             pass
+
 
 if __name__ == "__main__":
     print('Scoring Starts...')
