@@ -46,10 +46,25 @@ def get_row_rack_overlap(rack, rack_rows, overlap_thresh=0.7):
         
     return np.array(mask_list)
 
+def get_rack_position(rack_coord, all_racks):
+    x1_rack = rack_coord[0]['x1']
+    for index,i in enumerate(all_racks):
+        if i == rack_coord[0]:
+            continue
+        elif int(x1_rack) > int(i['x1']):
+            return "RIGHT"
+        else:
+            return "LEFT"
+
 def get_one_rack(output_dict, row_overlap_thresh=0.7):
     updated_dict = {}
     if len(output_dict['complete_rack'])>1:
         updated_dict['image_name'] = output_dict['image_name']
+        updated_dict['image_dimension'] = output_dict['image_dimension']
+        updated_dict['packets'] = output_dict['packets']
+        updated_dict['packets_confidence'] = output_dict['packets_confidence']
+
+
         max_conf = 0
         for i, conf in enumerate(output_dict['complete_rack_confidence']):
             if conf > max_conf:
@@ -59,20 +74,24 @@ def get_one_rack(output_dict, row_overlap_thresh=0.7):
         updated_dict['complete_rack'] = [output_dict['complete_rack'][max_index]]
         updated_dict['complete_rack_confidence'] = [max_conf]
 
+        updated_dict['position_flag'] = get_rack_position(updated_dict['complete_rack'], output_dict['complete_rack'])
+
         mask_list = get_row_rack_overlap(output_dict['complete_rack'][max_index], output_dict['rackrow'], row_overlap_thresh)
         print(mask_list)
         updated_dict['rackrow'] = (np.array(output_dict['rackrow'])[mask_list]).tolist()
         updated_dict['rackrow_confidence'] = np.array(output_dict['rackrow_confidence'])[mask_list].tolist()
-
+        
+        updated_dict['image_dir'] = output_dict['image_dir']
         return updated_dict
         
     else:
+        output_dict['position_flag'] = None
         return output_dict
 
 def find_packet_positions(data):
-    # Handle two racks
-    updated_data = get_one_rack(data)
-    rack_rows, packets, complete_rack = locator.get_rows_packets_predictions(updated_data)
+    
+    #updated_data = get_one_rack(data)  # Handle two racks
+    rack_rows, packets, complete_rack = locator.get_rows_packets_predictions(data)
     rack_rows = locator.get_sorted_rows(rack_rows)
     avg_row_height = locator.get_average_height(rack_rows)
     
