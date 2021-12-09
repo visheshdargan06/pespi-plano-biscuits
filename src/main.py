@@ -3,16 +3,21 @@ warnings.filterwarnings('ignore');
 
 import os
 import sys
-from scoring.integrated_scoring import IntegratedScoring
-from scoring.locate_packets import locate_packets, locate_packets_pickle
+#from scoring.integrated_scoring import IntegratedScoring
+from scoring.locate_packets_updated import locate_packets
 from utils.config import get_config
 from processing.calculate_compliance import Compliance
+from scoring.check_image import image_sanity_check
 
 config = get_config("production_config")
 
 if __name__ == "__main__":
 
-    print('Switched to 2nd Docker')
+    try:
+        print('Running Sanity Check on Images')
+        remove_images = image_sanity_check()
+    except:
+        print("Unable to perform sanity check on images.")
 
     # try:
     #     print('Scoring Starts - Sub Brand Detection')

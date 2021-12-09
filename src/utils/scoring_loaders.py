@@ -21,10 +21,17 @@ def filter_images(all_images, index_lower, index_upper):
     else:
         pass
     
-    return all_images
+    return all_images 
 
+
+def load_refrained_images(file_path):
+    '''loads the refrained images'''
     
-def image_loader(folder_path= None, index_lower= None, index_upper= None):
+    with open(file_path, 'r') as json_file:
+        refrained_images = json.load(json_file)
+    return refrained_images
+    
+def image_loader(folder_path= None, index_lower= None, index_upper= None, refrain_images= False):
     '''yields the images in the folder'''
     
     if not folder_path:
@@ -33,6 +40,11 @@ def image_loader(folder_path= None, index_lower= None, index_upper= None):
         folder_path = base_dir + config['data_path']['images_dir']
     
     all_images = os.listdir(folder_path)
+
+    if refrain_images:
+        refrained_images = load_refrained_images(config['data_path']['refrained_images_file'])
+        all_images = list(set(all_images) - set(refrained_images.keys()))
+
     all_images = [i for i in all_images if 'ipynb' not in i]
     all_images = [i for i in all_images if 
                   (i.endswith('.png') | i.endswith('.jpeg') | i.endswith('.jpg') | 

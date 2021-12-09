@@ -168,32 +168,35 @@ class Locator:
 
     
     def find_missing_first_row_modified(self, rack_rows, avg_row_height, packets, complete_rack, overlap_thresh=0.7, add_pixels=25, thresh_pixels=50):
-        if abs(complete_rack[0].get_bbox()[1] - rack_rows[0].get_bbox()[1]) > avg_row_height:
-            try:
-                x1 = np.max(np.array([row.get_bbox()[0] for row in rack_rows])) 
-            except Exception as e:  
-                print("No rack rows present")
-                return None
-            y1 = rack_rows[0].get_bbox()[1] - avg_row_height
-            if y1 > thresh_pixels:
-                y1 = y1 - add_pixels
-            x2 = np.max(np.array([row.get_bbox()[2] for row in rack_rows]))
-            y2 = rack_rows[0].get_bbox()[1]
-            row = Row(x1, y1, x2, y2)
-            # check if y1 coordinate becoame -ve.
-            if y1 < 0:
-                return None
-            
-            # check if any packets in this row.
-            for packet in packets:
-                box_area = Evaluator._getArea(packet.get_bbox())
-                intersection_area = Evaluator._getIntersectionArea(row.get_bbox(), packet.get_bbox())
-                overlap_perc = intersection_area/box_area
+        try:
+            if abs(complete_rack[0].get_bbox()[1] - rack_rows[0].get_bbox()[1]) > avg_row_height:
+                try:
+                    x1 = np.max(np.array([row.get_bbox()[0] for row in rack_rows])) 
+                except Exception as e:  
+                    print("No rack rows present")
+                    return None
+                y1 = rack_rows[0].get_bbox()[1] - avg_row_height
+                if y1 > thresh_pixels:
+                    y1 = y1 - add_pixels
+                x2 = np.max(np.array([row.get_bbox()[2] for row in rack_rows]))
+                y2 = rack_rows[0].get_bbox()[1]
+                row = Row(x1, y1, x2, y2)
+                # check if y1 coordinate becoame -ve.
+                if y1 < 0:
+                    return None
+                
+                # check if any packets in this row.
+                for packet in packets:
+                    box_area = Evaluator._getArea(packet.get_bbox())
+                    intersection_area = Evaluator._getIntersectionArea(row.get_bbox(), packet.get_bbox())
+                    overlap_perc = intersection_area/box_area
 
-                if overlap_perc > overlap_thresh:
-                    return row
-            return None
-        else:
+                    if overlap_perc > overlap_thresh:
+                        return row
+                return None
+            else:
+                return None
+        except:
             return None
     
     def find_missing_row_prev_after(self, rack_rows_prev, avg_height_prev, rack_rows_after, image_height,

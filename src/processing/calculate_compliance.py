@@ -13,6 +13,7 @@ import pandas as pd
 from PIL import Image
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+from tqdm import tqdm
 
 module_path = os.path.abspath(os.path.join('..'))
 if module_path not in sys.path:
@@ -45,6 +46,7 @@ def standardize_names(all_names, prev_after):
 
 def create_position_df(output, flag):
     df = pd.DataFrame(columns= ['Sub-Brand', 'Position', flag])
+    
     for idx_row in range(len(output)):
         rack_row = output[idx_row]
         
@@ -425,8 +427,6 @@ class RenderFinalResults:
         self.folder = folder
         self.json_outputs=os.listdir(folder)
          
-        
-   
     def plot_image(self, image_path, packets, ax):
         image = plt.imread(image_path)
         im = np.array(image, dtype=np.uint8)
@@ -449,7 +449,7 @@ class RenderFinalResults:
             ax.text((left)+2, (bottom+top)/2, name, color= 'black', size= 10)
             
     def render_images(self):
-        for i in self.json_outputs:
+        for i in tqdm(self.json_outputs):
             with open(os.path.join(self.folder, i)) as f:
                 data = json.load(f)
 
@@ -458,5 +458,5 @@ class RenderFinalResults:
             self.plot_image(data['rendering_detection']['image_path_after'], data['rendering_detection']['packets_after'], ax2)  
             # print(plt)
 
-            plt.savefig(os.path.join('/media/premium/common-biscuit/main/planogram_biscuit/data/raw/compliance_output',i.split(".")[0]+'.jpg'))
-            print(i.split(".")[0]+'.jpg','Saved')
+            plt.savefig(os.path.join('/media/premium/common-biscuit/main/planogram_biscuit/data/output/compliance_visualization/compliance_output_updated',i.split(".")[0]+'.jpg'))
+            #print(i.split(".")[0]+'.jpg','Saved')

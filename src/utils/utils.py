@@ -40,7 +40,14 @@ def save_final_csv(df, root_path):
     file_name = "detections.csv"
     
     df.to_csv(os.path.join(root_path, file_name), index= False)
-    
+
+def save_remove_images_json(remove_images, json_path):
+    from datetime import date
+    today = date.today().strftime("_%d_%m_%Y")
+    folder_name = "remove_images" + today
+    json_path = os.path.join(json_path, folder_name)
+    with open(json_path, 'w') as f:
+        f.write(json.dumps(remove_images))
     
 def test_logger(text):
     logger.info(text)

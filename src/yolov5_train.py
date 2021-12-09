@@ -53,7 +53,7 @@ WORLD_SIZE = int(os.getenv('WORLD_SIZE', 1))
 class Train_YOLOv5:
     def __init__(self, model_type):
         self.model_type = model_type
-        self.config = get_config("production_config_main")
+        self.config = get_config("yolov5_training_config")
         if self.model_type == 'rackrow':
             self.model_config = self.config["yolov5_train_rackrow"]
         elif self.model_type == 'packets':

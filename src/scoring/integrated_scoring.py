@@ -1,7 +1,4 @@
-#TODO: implement integrated scoring
-#  import yolov5 class
-# import classification model
-# import utils that load images and work on json (scoring loaders)
+
 import os
 import sys
 import json
@@ -19,11 +16,11 @@ from utils.config import get_config
 from tensorflow.keras import models
 import numpy as np 
 
-# from detect_modified_1 import Detect_YOLOv5
-# import torch
-# import gc
-# gc.collect()
-# torch.cuda.empty_cache()
+from yolov5_detection import Detect_YOLOv5
+import torch
+import gc
+gc.collect()
+torch.cuda.empty_cache()
 
 class IntegratedScoring:
     def __init__(self, curr_model, index_lower=None, index_upper=None):
@@ -64,10 +61,11 @@ class IntegratedScoring:
             self.class_indices_dict = {value:key for key,value in self.class_indices_dict.items()}
 
     def predictions_classification(self, save= True):
-        '''scoring and saving of the classification models like InceptionResNet-V2'''
+        '''scoring and saving of the classification models like InceptionResNet-V2''' 
         
-        for i_loader in image_loader(index_lower= self.index_lower, index_upper= self.index_upper):
+        for i_loader in image_loader(index_lower= self.index_lower, index_upper= self.index_upper, refrain_images=True):
             image_name = i_loader[0]
+
             image = i_loader[1]
             width, height = i_loader[2][0], i_loader[2][1]
             
@@ -186,11 +184,11 @@ class IntegratedScoring:
 if __name__ == "__main__":
     print('Scoring Starts...')
     try:
-        #print('Scoring Starts - Detection')
+        print('Scoring Starts - Detection')
         scoring_obj = IntegratedScoring(curr_model= 'integration', index_lower=None, index_upper=None)
         scoring_obj.scoring()
         #print(scoring_obj.results)
-        #print('Scoring Ends - Detection')
+        print('Scoring Ends - Detection')
     except Exception as e:
         print(e)
         print("Unable to perform detections.")

@@ -13,8 +13,8 @@ path:
 
 classification_model_training:
     # input directories with cropped images (input_data_directory should have train and valid as sub-folders)
-    input_data_directory: /home/sumit-tyagi/sumit-ssd/common-biscuit/main/planogram_biscuit/data/cropped_images/1108_0threshold_0image_size_73folders/
-    test_directory: /home/sumit-tyagi/sumit-ssd/common-biscuit/main/planogram_biscuit/data/cropped_images/1108_0threshold_0image_size_73folders/valid/
+    input_data_directory: /home/sumit-tyagi/sumit-ssd/common-biscuit/main/planogram_biscuit/data/cropped_images/1108_0threshold_0image_size_46folders/
+    test_directory: /home/sumit-tyagi/sumit-ssd/common-biscuit/main/planogram_biscuit/data/cropped_images/1108_0threshold_0image_size_46folders/valid/
     
     # image pre-processing
     image_size: 128
@@ -28,7 +28,7 @@ classification_model_training:
     train_layers: []    # ['block5_conv3', 'block5_conv2', 'block5_conv1']
     train_batchnormalization: True
     stack_layers: [256]
-    n_classes: 73
+    n_classes: 46  #46 classes after client cleared negotiable classes
     
     # model training
     learning_rate: 0.0002

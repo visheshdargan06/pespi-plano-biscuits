@@ -1,0 +1,84 @@
+yolov5_train_packets:
+  model_name: 'yolov5m - 642'
+  weights: '../model/pretrained_yolo/yolov5m.pt'  #initial weights path
+  cfg: ''  #model.yaml path
+  data: '../config/data_config/packets.yaml'  #dataset.yaml path
+  hyp: '../config/hyps/hyp.scratch.yaml'  #hyperparameters path
+  epochs: 200
+  batch_size: 8
+  imgsz: 640  #train, val image size (pixels)
+  rect: False #rectangular training
+  resume: False  #resume most recent training
+  nosave: False  #only save final checkpoint
+  noval: False #only validate final epoch
+  noautoanchor: False  #disable autoanchor check
+  evolve:   #evolve hyperparameters for x generations
+  bucket: ''  #gsutil bucket
+  cache:   #--cache images in "ram" (default) or "disk"
+  image_weights: False  #use weighted image selection for training
+  device: ''  #cuda device, i.e. 0 or 0,1,2,3 or cpu
+  multi_scale: False  #vary img-size +/- 50%%
+  single_cls: False  #train multi-class data as single-class
+  adam: False #use torch.optim.Adam() optimizer
+  sync_bn: False  #use SyncBatchNorm, only available in DDP mode
+  workers: 8  #maximum number of dataloader workers
+  project: '../runs/packets/train'  #save to project/name
+  name: 'new_main_exp_all_medium_642'
+  exist_ok: False  #existing project/name ok, do not increment
+  quad:  #quad dataloader
+  linear_lr: False
+  label_smoothing: 0.0  #Label smoothing epsilon
+  patience: 10   #EarlyStopping patience (epochs without improvement)
+  freeze: 0  #Number of layers to freeze. backbone=10, all=24
+  save_period: -1  #Save checkpoint every x epochs (disabled if < 1)
+  local_rank: -1  #DDP parameter, do not modify
+  entity: None  #W&B: Entity
+  upload_dataset: False  #W&B: Upload dataset as artifact table
+  bbox_interval: -1  #W&B: Set bounding-box image logging interval
+  artifact_alias: 'latest'  #W&B: Version of dataset artifact to use
+
+yolov5_train_rackrow:
+  model_name: 'yolov5s - 642'
+  weights: '../model/pretrained_yolo/yolov5s.pt'  #initial weights path
+  cfg: ''  #model.yaml path
+  data: '../config/data_config/rackrow.yaml'  #dataset.yaml path
+  hyp: '../config/hyps/hyp.scratch.yaml'  #hyperparameters path
+  epochs: 200
+  batch_size: 16
+  imgsz: 640  #train, val image size (pixels)
+  rect: False #rectangular training
+  resume: False  #resume most recent training
+  nosave: False  #only save final checkpoint
+  noval: False #only validate final epoch
+  noautoanchor: False  #disable autoanchor check
+  evolve:   #evolve hyperparameters for x generations
+  bucket: ''  #gsutil bucket
+  cache:   #--cache images in "ram" (default) or "disk"
+  image_weights: False  #use weighted image selection for training
+  device: ''  #cuda device, i.e. 0 or 0,1,2,3 or cpu
+  multi_scale: False  #vary img-size +/- 50%%
+  single_cls: False  #train multi-class data as single-class
+  adam: False #use torch.optim.Adam() optimizer
+  sync_bn: False  #use SyncBatchNorm, only available in DDP mode
+  workers: 8  #maximum number of dataloader workers
+  project: '../runs/new_rackrow/train'  #save to project/name
+  name: 'new_main_exp_all_642'
+  exist_ok: False  #existing project/name ok, do not increment
+  quad:  #quad dataloader
+  linear_lr: False
+  label_smoothing: 0.0  #Label smoothing epsilon
+  patience: 10   #EarlyStopping patience (epochs without improvement)
+  freeze: 0  #Number of layers to freeze. backbone=10, all=24
+  save_period: -1  #Save checkpoint every x epochs (disabled if < 1)
+  local_rank: -1  #DDP parameter, do not modify
+  entity: None  #W&B: Entity
+  upload_dataset: False  #W&B: Upload dataset as artifact table
+  bbox_interval: -1  #W&B: Set bounding-box image logging interval
+  artifact_alias: 'latest'  #W&B: Version of dataset artifact to use
+
+mlflow_logging: 
+    artifacts_location: file:///media/premium/common-biscuit/main/planogram_biscuit/model_tracking/artifacts
+    uri_train_valid: file:///media/premium/common-biscuit/main/planogram_biscuit/model_tracking/experiments
+    port: 5050
+    host: localhost
+    temp_artifacts_location: /media/premium/common-biscuit/main/planogram_biscuit/model_tracking/artifacts_temp
