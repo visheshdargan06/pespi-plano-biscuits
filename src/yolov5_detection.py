@@ -24,7 +24,7 @@ from utils.torch_utils import load_classifier, select_device, time_sync
 from utils.config import get_config
 
 class Detect_YOLOv5:
-    def __init__(self, model_type, model_version='medium'):
+    def __init__(self, model_type):
         self.model_type = model_type
         self.detect = get_config("production_config_main")
         self.config = self.detect["yolov5_detect_"+self.model_type]
@@ -222,8 +222,6 @@ class Detect_YOLOv5:
                     for c in det[:, -1].unique():
                         n = (det[:, -1] == c).sum()  # detections per class
                         s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
-
-
                     
                     # Write results
                     for *xyxy, conf, cls in reversed(det):

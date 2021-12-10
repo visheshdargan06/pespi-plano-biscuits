@@ -31,13 +31,20 @@ def save_final_json(image_name, json_result, json_path= None):
     with open(os.path.join(json_path, json_file_name), 'w') as f:
         f.write(json.dumps(json_result, indent=2, separators=(',', ': ')))
         
-        
-def save_final_csv(df, root_path):
-    pathlib.Path(root_path).mkdir(parents=True, exist_ok=True)
+# old code        
+# def save_final_csv(df, root_path):
+#     pathlib.Path(root_path).mkdir(parents=True, exist_ok=True)
     
+#     from datetime import date
+#     today = date.today().strftime("_%d_%m_%Y")
+#     file_name = "detections.csv"
+    
+#     df.to_csv(os.path.join(root_path, file_name), index= False)
+
+def save_final_csv(df, root_path, file_name="detections.csv"):
+    pathlib.Path(root_path).mkdir(parents=True, exist_ok=True)
     from datetime import date
     today = date.today().strftime("_%d_%m_%Y")
-    file_name = "detections.csv"
     
     df.to_csv(os.path.join(root_path, file_name), index= False)
 

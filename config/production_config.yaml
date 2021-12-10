@@ -107,7 +107,7 @@ compliance:
     path:
         image_output: data/output/image_annotations/test_outputs
         output: data/output/compliance/location_pickles/test_loader
-        output_prev_after_comparsion: main/planogram_biscuit/data/output/compliance/prev_after_updated/
+        output_prev_after_comparsion: main/planogram_biscuit/data/output/compliance/prev_after_new_best/
     threshold:
         packet_row_overlap_thresh: 0.7
         packet_top_row_overlap_thresh: 0.5
@@ -124,6 +124,10 @@ compliance:
 
 image_check:
     total_detection_threshold: 0.5
-    rack_area_threshold: 50
-    packets_area_threshold: 75
+    rack_area_threshold: 65
+    packets_area_threshold: 85
     row_count_threshold: 1
+
+consolidated_path:
+    template_images: main/planogram_biscuit/data/vendor_samples/images_consolidated/
+    template_csvs: main/planogram_biscuit/data/output/image_annotations/consolidated/

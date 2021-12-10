@@ -65,11 +65,12 @@ def sanity_check(data):
         #packets_count = len(data['packets'])
 
         if total_detection_confidence > total_detection_threshold and \
-            avg_rackrow_area > rack_area_threshold and \
-                avg_packets_area > packets_area_threshold and \
+            avg_rackrow_area < rack_area_threshold and \
+                avg_packets_area < packets_area_threshold and \
                         row_count > row_count_threshold :
             return True, "Pass"
         else:
+            print(avg_rackrow_area, avg_packets_area)
             return False, "Thresholds not passed"
 
 def image_sanity_check():
