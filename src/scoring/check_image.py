@@ -18,7 +18,7 @@ packets_area_threshold = config['image_check']['packets_area_threshold']
 # packet_count_threshold = config['image_check']['packet_count_threshold']
 row_count_threshold = config['image_check']['row_count_threshold']
 
-remove_images_json_path = config['path']['remove_images_json']
+remove_images_json_path = config['path']['project'] + config['path']['remove_images_json']
 
 def get_avg_detection_size(list_data):
     height = []
@@ -74,11 +74,9 @@ def sanity_check(data):
             return False, "Thresholds not passed"
 
 def image_sanity_check():
-    packets_output_dir = config['path']['blob_base_dir'] + config['integrated_output']['packets_output_dir'] + config['data_path']['output_images_folder']
-    rackrow_output_dir = config['path']['blob_base_dir'] + config['integrated_output']['rackrow_output_dir'] + config['data_path']['output_images_folder']
-    # packets_output_dir = "/media/premium/common-biscuit/main/planogram_biscuit/data/output/image_annotations/packets_detection/op_annotations_new/"
-    # rackrow_output_dir = "/media/premium/common-biscuit/main/planogram_biscuit/data/output/image_annotations/rackrow_detection/op_annotations_new/"
-
+    packets_output_dir = config['path']['project'] + config['integrated_output']['packets_output_dir'] + config['data_path']['output_images_folder']
+    rackrow_output_dir = config['path']['project'] + config['integrated_output']['rackrow_output_dir'] + config['data_path']['output_images_folder']
+   
     remove_images = {}
     for json_output in os.listdir(rackrow_output_dir):
         if 'ipynb' in json_output:

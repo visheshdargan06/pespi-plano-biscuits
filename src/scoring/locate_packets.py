@@ -122,7 +122,7 @@ def get_one_rack_prev(output_dict, rack_position_prev, row_overlap_thresh=0.7):
     save_location_more_rack = '/media/premium/common-biscuit/main/planogram_biscuit/data/output/validation/more_than_2_racks/'
 
     updated_dict = {}
-    print(output_dict['image_name'], rack_position_prev, len(output_dict['complete_rack']))
+    #print(output_dict['image_name'], rack_position_prev, len(output_dict['complete_rack']))
 
     if len(output_dict['complete_rack']) == 0 and (rack_position_prev is None):
         sbp.call(['cp', os.path.join(file_location, output_dict['image_name'].split(".")[0]+'.jpg'), os.path.join(save_location_no_rack,(output_dict['image_name'].split(".")[0]+'.jpg'))])

@@ -29,14 +29,14 @@ class IntegratedScoring:
         self.index_upper = index_upper
         #self.config = get_config()
         self.config = get_config("production_config")
-        self.blob_base_dir = self.config['data_path']['blob_base_dir']
+        #self.blob_base_dir = self.config['data_path']['blob_base_dir']
         
         ###### productionise changes required for 2 folder ########
-        self.images_dir = self.blob_base_dir + self.config['data_path']['images_dir']
+        self.images_dir = self.config['path']['project'] + self.config['data_path']['images_dir']
         self.output_images_folder = self.config['data_path']['output_images_folder']
 
         if self.curr_model in ['packets_detection', 'rackrow_detection']:  
-            self.output_dir = self.blob_base_dir + self.config[curr_model]['output_dir'] + self.output_images_folder
+            self.output_dir = self.config['path']['project'] + self.config[curr_model]['output_dir'] + self.output_images_folder
             try:
                 os.mkdir(self.output_dir)
             except:
@@ -44,9 +44,9 @@ class IntegratedScoring:
             #self.image_size = self.config[curr_model]['image_size']
 
         elif self.curr_model == 'sub_brand_detection':
-            self.model_dir = self.blob_base_dir + self.config[curr_model]['model_dir']
-            self.output_dir = self.blob_base_dir + self.config[curr_model]['output_dir'] + self.output_images_folder
-            self.input_json = self.blob_base_dir + self.config[curr_model]['input_json'] + self.output_images_folder
+            self.model_dir = self.config['path']['project'] + self.config[curr_model]['model_dir']
+            self.output_dir = self.config['path']['project'] + self.config[curr_model]['output_dir'] + self.output_images_folder
+            self.input_json = self.config['path']['project'] + self.config[curr_model]['input_json'] + self.output_images_folder
             self.cropped_size = int(self.config[curr_model]['cropped_size'])
             
             try:
@@ -141,8 +141,8 @@ class IntegratedScoring:
         
         self.config = get_config("production_config")
         
-        self.sub_brand_output_dir = self.blob_base_dir + self.config['integrated_output']['sub_brand_output_dir'] + self.output_images_folder
-        self.rackrow_output_dir = self.blob_base_dir + self.config['integrated_output']['rackrow_output_dir'] + self.output_images_folder
+        self.sub_brand_output_dir = self.config['path']['project'] + self.config['integrated_output']['sub_brand_output_dir'] + self.output_images_folder
+        self.rackrow_output_dir = self.config['path']['project'] + self.config['integrated_output']['rackrow_output_dir'] + self.output_images_folder
         
         
         for json_output in os.listdir(self.sub_brand_output_dir):

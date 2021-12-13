@@ -1,32 +1,32 @@
 ---
 path:
-    blob_base_dir: /media/premium/common-biscuit/
-    data: main/planogram_biscuit/data/
+    blob_base_dir: /
+    data: pepsi-plano-biscuits/data/
     images: images
-    raw: /mnt/common/data/raw/
-    annotations: annotations
-    raw_annotations: /mnt/common/data/raw/annotations
-    classes: /mnt/common/data/lookups/predefined_classes.txt
-    non_packet: /mnt/common/data/lookups/non_packets.txt
+    raw: pepsi-plano-biscuits/data/raw
+    annotations: annotations_master
+    raw_annotations: pepsi-plano-biscuits/data/raw/annotations_master
+    classes: pepsi-plano-biscuits/data/lookups/predefined_classes.txt
+    non_packet: pepsi-plano-biscuits/data/lookups/non_packets.txt
     project: /tf/
     packets_lookup: 'lookups/packets_lookup.csv'
     rackrow_lookup: 'lookups/rackrow_lookup.csv'
     validation_images: ''
-    remove_images_json: '/media/premium/common-biscuit/main/planogram_biscuit/data/output/remove_images'
+    remove_images_json: 'pepsi-plano-biscuits/data/output/remove_images/remove_images'
 
 
 data_path: 
-    blob_base_dir: /media/premium/common-biscuit/ 
-    images_dir: main/planogram_biscuit/data/raw/all_images_12Nov/ # folder for incremental images (need to check the input data stream in production)
-    output_images_folder: op_annotations_new/ # sub-folder under which annotations would be stored (to be automated later on)
-    refrained_images_file: /home/sumit-tyagi/sumit-ssd/common-biscuit/main/planogram_biscuit/data/output/remove_images/remove_images_08_12_2021.json # folder for refrained images
+    blob_base_dir: / 
+    images_dir: pepsi-plano-biscuits/data/all_images_staging_test # folder for incremental images (need to check the input data stream in production)
+    output_images_folder: op_annotations/ # sub-folder under which annotations would be stored (to be automated later on)
+    refrained_images_file: pepsi-plano-biscuits/data/output/remove_images/remove_images_08_12_2021.json # folder for refrained images
 
 
 yolov5_detect_packets:
   model_version: 'medium'
-  weights_small: '/media/premium/common-biscuit/main/planogram_biscuit/runs/packets/train/new_main_exp_all/weights/best.pt'
-  #weights_medium: '/media/premium/common-biscuit/main/planogram_biscuit/runs/packets/train/new_main_exp_all_medium/weights/best.pt'   #model.pt path(s)
-  weights_medium: '/media/premium/common-biscuit/main/planogram_biscuit/runs/packets/train/new_main_exp_all_medium_642/weights/best.pt'
+  weights_small: 'pepsi-plano-biscuits/data/model/detetction_weights/packets/small_best.pt'
+  #weights_medium: '/pepsi-plano-biscuits/runs/packets/train/new_main_exp_all_medium/weights/best.pt'   #model.pt path(s)
+  weights_medium: 'pepsi-plano-biscuits/data/model/detetction_weights/packets/medium_best.pt'
   imgsz: [640]
   conf_thres: 0.4  #object confidence threshold
   iou_thres: 0.5  #IOU threshold for NMS
@@ -42,7 +42,7 @@ yolov5_detect_packets:
   augment: False  # augmented inference
   visualize: False  # visualize features
   update: False  # update all models
-  project: '../runs/packets/detect'  # save results to project/name
+  project: 'runs/packets/detect'  # save results to project/name
   name: 'new_main_exp_all_medium'  # save results to project/name
   exist_ok: False  # existing project/name ok, do not increment
   line_thickness: 3  # bounding box thickness (pixels)
@@ -52,8 +52,8 @@ yolov5_detect_packets:
 
 yolov5_detect_rackrow:
   model_version: 'small'
-  #weights_small: '/media/premium/common-biscuit/main/planogram_biscuit/runs/new_rackrow/train/main_exp_all2/weights/best.pt'   #model.pt path(s)
-  weights_small: '/media/premium/common-biscuit/main/planogram_biscuit/runs/new_rackrow/train/new_main_exp_all_642/weights/best.pt'
+  #weights_small: '/pepsi-plano-biscuits/runs/new_rackrow/train/main_exp_all2/weights/best.pt'   #model.pt path(s)
+  weights_small: 'pepsi-plano-biscuits/data/model/detetction_weights/rackrow/small_best.pt'
   weights_medium: ''
   imgsz: [640]
   conf_thres: 0.50  #object confidence threshold
@@ -70,7 +70,7 @@ yolov5_detect_rackrow:
   augment: False  # augmented inference
   visualize: False  # visualize features
   update: False  # update all models
-  project: '../runs/new_rackrow/detect'  # save results to project/name
+  project: 'runs/new_rackrow/detect'  # save results to project/name
   name: 'exp_all'  # save results to project/name
   exist_ok: False  # existing project/name ok, do not increment
   line_thickness: 3  # bounding box thickness (pixels)
@@ -78,36 +78,36 @@ yolov5_detect_rackrow:
   hide_conf: False  # hide confidences
   half: False  # use FP16 half-precision inference
 
-mlflow_logging: 
-    artifacts_location: file:///media/premium/common-biscuit/main/planogram_biscuit/model_tracking/artifacts
-    uri_train_valid: file:///media/premium/common-biscuit/main/planogram_biscuit/model_tracking/experiments
-    port: 5050
-    host: localhost
-    temp_artifacts_location: /media/premium/common-biscuit/main/planogram_biscuit/model_tracking/artifacts_temp
+# mlflow_logging: 
+#     artifacts_location: file:///pepsi-plano-biscuits/model_tracking/artifacts
+#     uri_train_valid: file:///pepsi-plano-biscuits/model_tracking/experiments
+#     port: 5050
+#     host: localhost
+#     temp_artifacts_location: /pepsi-plano-biscuits/model_tracking/artifacts_temp
 
 packets_detection:
-    output_dir: main/planogram_biscuit/data/output/image_annotations/packets_detection/  # save json files
+    output_dir: pepsi-plano-biscuits/data/output/image_annotations/packets_detection/  # save json files
 
 rackrow_detection:
-    output_dir: main/planogram_biscuit/data/output/image_annotations/rackrow_detection/  # save json files
+    output_dir: pepsi-plano-biscuits/data/output/image_annotations/rackrow_detection/  # save json files
 
 sub_brand_detection:
-    model_dir: main/planogram_biscuit/model/sub_brand_classification/1021_InceptionResNetV2_0.0002LR_20Epoch_45Classes/
-    input_json: main/planogram_biscuit/data/output/image_annotations/packets_detection/  # output from the packet detection model in json format
+    model_dir: pepsi-plano-biscuits/data/model/sub_brand_classification_weights/1130_InceptionResNetV2_0.0002LR_100Epoch_46Classes/
+    input_json: pepsi-plano-biscuits/data/output/image_annotations/packets_detection/  # output from the packet detection model in json format
     cropped_size: 128  # to be used same as was used in training (would be automated in next iterations)
-    output_dir: main/planogram_biscuit/data/output/image_annotations/sub_brand_detection/
+    output_dir: pepsi-plano-biscuits/data/output/image_annotations/sub_brand_detection/
 
 integrated_output:
-    packets_output_dir: main/planogram_biscuit/data/output/image_annotations/packets_detection/
-    rackrow_output_dir: main/planogram_biscuit/data/output/image_annotations/rackrow_detection/
-    sub_brand_output_dir: main/planogram_biscuit/data/output/image_annotations/sub_brand_detection/
-    integrated_dir: main/planogram_biscuit/data/output/image_annotations/integrated/
+    packets_output_dir: pepsi-plano-biscuits/data/output/image_annotations/packets_detection/
+    rackrow_output_dir: pepsi-plano-biscuits/data/output/image_annotations/rackrow_detection/
+    sub_brand_output_dir: pepsi-plano-biscuits/data/output/image_annotations/sub_brand_detection/
+    integrated_dir: pepsi-plano-biscuits/data/output/image_annotations/integrated/
 
 compliance:
     path:
         image_output: data/output/image_annotations/test_outputs
         output: data/output/compliance/location_pickles/test_loader
-        output_prev_after_comparsion: main/planogram_biscuit/data/output/compliance/prev_after_new_best/
+        output_prev_after_comparsion: pepsi-plano-biscuits/data/output/compliance/prev_after_new_best/
     threshold:
         packet_row_overlap_thresh: 0.7
         packet_top_row_overlap_thresh: 0.5
@@ -129,5 +129,5 @@ image_check:
     row_count_threshold: 1
 
 consolidated_path:
-    template_images: main/planogram_biscuit/data/vendor_samples/images_consolidated/
-    template_csvs: main/planogram_biscuit/data/output/image_annotations/consolidated/
+    template_images: pepsi-plano-biscuits/data/vendor_samples/images_consolidated/
+    template_csvs: pepsi-plano-biscuits/data/output/image_annotations/consolidated/

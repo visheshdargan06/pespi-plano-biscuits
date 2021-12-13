@@ -36,13 +36,15 @@ def image_loader(folder_path= None, index_lower= None, index_upper= None, refrai
     
     if not folder_path:
         config = get_config("production_config")
-        base_dir = config['data_path']['blob_base_dir']
+        base_dir = config['path']['project']
         folder_path = base_dir + config['data_path']['images_dir']
     
     all_images = os.listdir(folder_path)
 
     if refrain_images:
-        refrained_images = load_refrained_images(config['data_path']['refrained_images_file'])
+        from datetime import date
+        today = date.today().strftime("_%d_%m_%Y")
+        refrained_images = load_refrained_images(os.path.join(config['path']['project'],config['path']['remove_images_json']+today))
         all_images = list(set(all_images) - set(refrained_images.keys()))
 
     all_images = [i for i in all_images if 'ipynb' not in i]
@@ -69,7 +71,7 @@ def final_json(p_dict, json_name):
     '''saving the final integrated json file'''
     
     config = get_config("production_config")
-    base_dir = config['data_path']['blob_base_dir']
+    base_dir = config['path']['project']
     output_images_folder = config['data_path']['output_images_folder']
     
     config = get_config("production_config")

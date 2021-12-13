@@ -26,14 +26,14 @@ from utils.config import get_config
 class Detect_YOLOv5:
     def __init__(self, model_type):
         self.model_type = model_type
-        self.detect = get_config("production_config_main")
+        self.detect = get_config("production_config")
         self.config = self.detect["yolov5_detect_"+self.model_type]
         self.model_version = self.config['model_version']
         if self.model_version == 'small':
-            self.weights = self.config['weights_small']  
+            self.weights = os.path.join(self.detect['path']['project'], self.config['weights_small'] ) 
         else:
-            self.weights = self.config['weights_medium']
-        self.source = self.detect['data_path']['blob_base_dir']+self.detect['data_path']['images_dir']
+            self.weights = os.path.join(self.detect['path']['project'], self.config['weights_medium'])
+        self.source = os.path.join(self.detect['path']['project'],self.detect['data_path']['images_dir'])
         self.imgsz = self.config['imgsz']
         self.conf_thres = self.config['conf_thres']
         self.iou_thres = self.config['iou_thres']

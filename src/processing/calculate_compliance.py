@@ -339,12 +339,12 @@ class Compliance:
                 
             # loading the json file for detecting image dimensions
             integration_config = get_config("production_config")
-            json_path_prev = os.path.join(integration_config['data_path']['blob_base_dir'], 
+            json_path_prev = os.path.join(integration_config['path']['project'], 
                                           integration_config['integrated_output']['integrated_dir'],
                                           integration_config['data_path']['output_images_folder'],
                                           prev.replace('.pkl', ''))
             
-            json_path_after = os.path.join(integration_config['data_path']['blob_base_dir'], 
+            json_path_after = os.path.join(integration_config['path']['project'], 
                                           integration_config['integrated_output']['integrated_dir'],
                                           integration_config['data_path']['output_images_folder'],
                                           after.replace('.pkl', ''))
@@ -551,7 +551,7 @@ class ComplianceConsolidated:
                 
             # loading the json file for detecting image dimensions
             integration_config = get_config("production_config")
-            json_path_prev = os.path.join(integration_config['data_path']['blob_base_dir'], 
+            json_path_prev = os.path.join(integration_config['path']['project'], 
                                           integration_config['integrated_output']['integrated_dir'],
                                           integration_config['data_path']['output_images_folder'],
                                           prev.replace('.pkl', ''))
@@ -560,11 +560,11 @@ class ComplianceConsolidated:
             image_path_prev = self.read_image_path(json_path_prev)
 
             #consolidated_path_images = "/mnt/common/data/vendor_samples/images_consolidated/"
-            consolidated_path_images = os.path.join(integration_config['data_path']['blob_base_dir'],
+            consolidated_path_images = os.path.join(integration_config['path']['project'],
                                                     integration_config['consolidated_path']['template_images'])
 
             #consolidated_path_csv = "/mnt/common/data/output/image_annotations/consolidated/"
-            consolidated_path_csv = os.path.join(integration_config['data_path']['blob_base_dir'],
+            consolidated_path_csv = os.path.join(integration_config['path']['project'],
                                                     integration_config['consolidated_path']['template_csvs'])
             ordered_detections_list = []
             for template_name in os.listdir(consolidated_path_images):
