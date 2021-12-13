@@ -8,7 +8,7 @@ path:
     raw_annotations: pepsi-plano-biscuits/data/raw/annotations_master
     classes: pepsi-plano-biscuits/data/lookups/predefined_classes.txt
     non_packet: pepsi-plano-biscuits/data/lookups/non_packets.txt
-    project: /tf/
+    project: /
     packets_lookup: 'lookups/packets_lookup.csv'
     rackrow_lookup: 'lookups/rackrow_lookup.csv'
     validation_images: ''
