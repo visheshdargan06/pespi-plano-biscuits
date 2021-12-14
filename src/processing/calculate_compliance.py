@@ -694,6 +694,8 @@ def get_image_compliance_consolidated(output_prev, template_name, consolidated_p
         row_level_after_count[i] = len([j for j in after_sub_brands if str(j).lower() != 'nan'])
         
     # generating positional data
+    number_of_rows=0
+    average_row_compliance=0
     final_dict = {}
     for i in df_merged.iterrows():
         i = i[1]
@@ -711,10 +713,13 @@ def get_image_compliance_consolidated(output_prev, template_name, consolidated_p
       
     for i in final_dict.keys():
         final_dict[i]['row_compliance'] = row_level_compliance[i]
+        number_of_rows=number_of_rows+1
+        average_row_compliance=average_row_compliance+row_level_compliance[i]
         final_dict[i]['prev_rack_row_product_capacity'] = row_level_prev_count[i]
         final_dict[i]['after_rack_row_product_capacity'] = row_level_after_count[i]
         
     final_dict['row_position_compliance'] = 100 * df_merged.Compliance.mean()
+    final_dict['average_row_compliance']=average_row_compliance/number_of_rows
     final_dict['rack_compliance'] = overall_rack_compliance
     
     final_dict['rack_product_capacity_prev'] = str(np.array(list(row_level_prev_count.values())).sum())
